@@ -21,6 +21,19 @@ public class Movable {
         this.yPos += this.yVelocity;
     }
 
+    public BufferedImage getSprite(int x, int y, int width, int height){
+        return spriteSheet.getSubimage(x, y, width, height);
+    }
+
+
+    public BufferedImage getSpriteByIndex(int indexX, int indexY, int canvasWidth, int canvasHeight){
+
+        int x = (indexX * canvasWidth);
+        int y = (indexY * canvasHeight);
+
+        return spriteSheet.getSubimage(x, y, canvasWidth, canvasHeight);
+    }
+
     public int getxPos() {
         return xPos;
     }
@@ -71,5 +84,9 @@ public class Movable {
 
     public void setSpriteSheet(BufferedImage spriteSheet) {
         this.spriteSheet = spriteSheet;
+    }
+
+    public BufferedImage getSpriteSheet() {
+        return spriteSheet;
     }
 }
