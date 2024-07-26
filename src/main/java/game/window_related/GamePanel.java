@@ -1,8 +1,9 @@
 package game.window_related;
 
+import game.entity_related.animation_related.Sprite;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
-import game.player_related.Player;
+import game.entity_related.models.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +17,6 @@ public class GamePanel extends JPanel {
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
-
 
     public GamePanel() {
         importPlayerSpriteSheet();
@@ -50,14 +50,21 @@ public class GamePanel extends JPanel {
         player.setyPos(y);
     }
 
+    public void updateAnimation(float deltaTime) {
+        player.updateAnimation(deltaTime); // Atualiza a animação do jogador com deltaTime
+    }
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        player.updatePosition();
+        player.updatePosition(); // Atualiza a posição do jogador
+        updateAnimation(0.016f); // Passa um valor padrão para deltaTime; isso deve ser atualizado com o valor real no futuro
+
+        Sprite currentSprite = player.getCurrentSprite();
 
         g.drawImage(
-                player.getSpriteByIndex(0, 0, player.getCanvasWidth(), player.getCanvasHeight()),
+                player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
                 player.getxPos() - player.getOffsetX(),
                 player.getyPos() - player.getOffsetY(),
                 player.getRenderWidth(),
@@ -71,7 +78,6 @@ public class GamePanel extends JPanel {
                 player.getWidth(),
                 player.getHeight()
         );
-
     }
 
     private void importPlayerSpriteSheet() {
@@ -81,7 +87,7 @@ public class GamePanel extends JPanel {
             assert inputStream != null;
             player.setSpriteSheet(ImageIO.read(inputStream));
         } catch (IOException e) {
-            throw new RuntimeException("erro na importação da sprite sheet do jogador");
+            throw new RuntimeException("Erro na importação da sprite sheet do jogador");
         }
     }
 }

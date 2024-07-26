@@ -20,38 +20,35 @@ public class Game implements Runnable {
 
     private void startGameLoop() {
         gameThread = new Thread(this);
-        gameThread.run();
+        gameThread.start(); // Use start() em vez de run()
     }
-
 
     @Override
     public void run() {
+        long lastFrameTime = System.nanoTime();
+        long now;
+        double timePerFrame = 1000000000.0 / FPS_SET;
 
         int frames = 0;
-        long lastCheck = 0;
-
-        double timePerFrame = 1000000000.0 / FPS_SET;
-        long lastFrame = System.nanoTime();
-        long now;
+        long lastCheck = System.currentTimeMillis();
 
         while (true) {
-
             now = System.nanoTime();
-            if (now - lastFrame >= timePerFrame) {
+            double deltaTime = (now - lastFrameTime) / 1000000000.0; // Convertendo para segundos
 
+            if (now - lastFrameTime >= timePerFrame) {
+                gamePanel.updateAnimation((float) deltaTime); // Passa deltaTime real para o GamePanel
                 gamePanel.repaint();
-                lastFrame = now;
+                lastFrameTime = now;
                 frames++;
             }
 
-
-
+            // FPS display
             if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
                 System.out.println("FPS: " + frames);
                 frames = 0;
             }
         }
-
     }
 }
