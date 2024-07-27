@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 public class GamePanel extends JPanel {
 
-    private Player player = new Player(0, 0, 52, 60);
+    private Player player = new Player(0, 0, 52, 60, 10);
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
@@ -40,9 +40,24 @@ public class GamePanel extends JPanel {
         setMinimumSize(size);
     }
 
-    public void movePlayer(double speedX, double speedY) {
-        player.setxVelocity(speedX);
-        player.setyVelocity(speedY);
+    public void movePlayer(char direction, double acceleration) {
+        if (direction == 'X') {
+
+            player.setxAcceleration(acceleration);
+
+            if (acceleration > 0) {
+                player.setFacingForward(true);
+                player.setAnimation(player.getRunAni());
+            } else if (acceleration < 0) {
+                player.setFacingForward(false);
+                player.setAnimation(player.getRunAni());
+            } else {
+                player.setAnimation(player.getIdleAni());
+            }
+
+        } else {
+
+        }
     }
 
     public void changePlayerPos(int x, int y) {
@@ -50,27 +65,36 @@ public class GamePanel extends JPanel {
         player.setyPos(y);
     }
 
-    public void updateAnimation(float deltaTime) {
+    public void updateGame(float deltaTime) {
         player.updateAnimation(deltaTime); // Atualiza a animação do jogador com deltaTime
+        player.updatePosition(deltaTime);  // Atualiza a posição do jogador com delta time
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        player.updatePosition(); // Atualiza a posição do jogador
-        updateAnimation(0.016f); // Passa um valor padrão para deltaTime; isso deve ser atualizado com o valor real no futuro
-
         Sprite currentSprite = player.getCurrentSprite();
 
-        g.drawImage(
-                player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
-                player.getxPos() - player.getOffsetX(),
-                player.getyPos() - player.getOffsetY(),
-                player.getRenderWidth(),
-                player.getRenderHeight(),
-                null
-        );
+        if (player.isFacingForward()) {
+            g.drawImage(
+                    player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
+                    player.getxPos() - player.getOffsetX(),
+                    player.getyPos() - player.getOffsetY(),
+                    player.getRenderWidth(),
+                    player.getRenderHeight(),
+                    null
+            );
+        } else {
+            g.drawImage(
+                    player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
+                    player.getxPos() + player.getCanvasWidth() - player.getOffsetX() / 2 + player.getWidth(),
+                    player.getyPos() - player.getOffsetY(),
+                    -player.getRenderWidth(),
+                    player.getRenderHeight(),
+                    null
+            );
+        }
 
         g.drawRect(
                 player.getxPos(),

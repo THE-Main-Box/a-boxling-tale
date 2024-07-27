@@ -10,6 +10,11 @@ public class Sprite {
         this.duration = duration;
     }
 
+    public Sprite(int indexX, int indexY) {
+        this.indexX = indexX;
+        this.indexY = indexY;
+    }
+
     public int getIndexX() {
         return indexX;
     }

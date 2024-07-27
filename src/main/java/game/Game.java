@@ -37,7 +37,7 @@ public class Game implements Runnable {
             double deltaTime = (now - lastFrameTime) / 1000000000.0; // Convertendo para segundos
 
             if (now - lastFrameTime >= timePerFrame) {
-                gamePanel.updateAnimation((float) deltaTime); // Passa deltaTime real para o GamePanel
+                gamePanel.updateGame((float) deltaTime); // Passa deltaTime real para o GamePanel
                 gamePanel.repaint();
                 lastFrameTime = now;
                 frames++;

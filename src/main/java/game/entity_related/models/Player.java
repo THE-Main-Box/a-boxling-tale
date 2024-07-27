@@ -16,15 +16,39 @@ public class Player extends Movable {
 
     private List<Sprite> idleAni = new ArrayList<>();
     private List<Sprite> runAni = new ArrayList<>();
+    private List<Sprite> jumpAni = new ArrayList<>();
+    private List<Sprite> fallAni = new ArrayList<>();
+    private List<Sprite> jumpPrepAni = new ArrayList<>(); // Lista para animação de preparação para o pulo
 
+    public Player(int posX, int posY, int width, int height, double weight) {
+        super(posX, posY, width, height, weight);
 
-    public Player(int posX, int posY, int width, int height) {
-        super(posX, posY, width, height);
+        setXMaxSpeed(250);
+        setYMaxSpeed(250);
 
         initializeIdleAni();
         initializeRunAnimation();
+        initializeJumpAnimation();
+        initializeFallAnimation();
+        initializeJumpPrepAnimation(); // Inicializar animação de preparação para o pulo
 
-        setAnimation(runAni);
+        setAnimation(idleAni);
+    }
+
+    private void initializeFallAnimation(){
+        fallAni.add(new Sprite(2, 3));
+        fallAni.add(new Sprite(3, 3));
+        fallAni.add(new Sprite(0, 3));
+    }
+
+    private void initializeJumpAnimation() {
+        jumpAni.add(new Sprite(0, 3));
+        jumpAni.add(new Sprite(1, 4));
+    }
+
+    private void initializeJumpPrepAnimation() {
+        jumpPrepAni.add(new Sprite(0, 3)); // Exemplo: Adicionar sprites para a animação de preparação
+        jumpPrepAni.add(new Sprite(0, 3));
     }
 
     private void initializeIdleAni() {
@@ -33,18 +57,23 @@ public class Player extends Movable {
     }
 
     private void initializeRunAnimation() {
-        runAni.add(new Sprite(0, 1, 300));
-        runAni.add(new Sprite(1, 1, 30));
-        runAni.add(new Sprite(2, 1, 300));
-        runAni.add(new Sprite(3, 1, 30));
+        runAni.add(new Sprite(0, 1, 200));
+        runAni.add(new Sprite(1, 1, 20));
+        runAni.add(new Sprite(2, 1, 200));
+        runAni.add(new Sprite(3, 1, 20));
 
-        runAni.add(new Sprite(0, 2, 300));
-        runAni.add(new Sprite(1, 2, 30));
-        runAni.add(new Sprite(2, 2, 300));
-        runAni.add(new Sprite(3, 2, 30));
+        runAni.add(new Sprite(0, 2, 200));
+        runAni.add(new Sprite(1, 2, 20));
+        runAni.add(new Sprite(2, 2, 200));
+        runAni.add(new Sprite(3, 2, 20));
     }
 
-
+//    @Override
+//    public void updateAnimation(float deltaTime) {
+//
+//
+//        super.updateAnimation(deltaTime);
+//    }
 
     public List<Sprite> getIdleAni() {
         return idleAni;
@@ -52,6 +81,18 @@ public class Player extends Movable {
 
     public List<Sprite> getRunAni() {
         return runAni;
+    }
+
+    public List<Sprite> getJumpAni() {
+        return jumpAni;
+    }
+
+    public List<Sprite> getFallAni() {
+        return fallAni;
+    }
+
+    public List<Sprite> getJumpPrepAni() {
+        return jumpPrepAni;
     }
 
     public int getCanvasWidth() {
@@ -77,5 +118,4 @@ public class Player extends Movable {
     public int getRenderHeight() {
         return RENDER_HEIGHT;
     }
-
 }

@@ -6,35 +6,70 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Movable {
-    private int xPos, yPos, width, height;
-    private double xVelocity, yVelocity;
-    private BufferedImage spriteSheet;
-    private List<Sprite> currentAnimation;
+    protected int xPos, yPos, width, height;
+    protected double xVelocity, yVelocity;
+    protected int XMaxSpeed, YMaxSpeed;
 
-    private int aniTick;
-    private long lastFrameChangeTime;
-    private float elapsedTime; // Tempo decorrido desde a última atualização
 
-    public Movable(int posX, int posY, int width, int height) {
+    protected double weight;
+
+    protected double xAcceleration, yAcceleration;
+
+    protected BufferedImage spriteSheet;
+    protected List<Sprite> currentAnimation;
+    protected boolean facingForward = true;
+
+    protected int aniTick;
+    protected long lastFrameChangeTime;
+    protected float elapsedTime; // Tempo decorrido desde a última atualização
+
+    public Movable(int posX, int posY, int width, int height, double weight) {
         this.xPos = posX;
         this.yPos = posY;
         this.width = width;
         this.height = height;
+        this.weight = weight;
         this.xVelocity = 0;
         this.yVelocity = 0;
         this.elapsedTime = 0;
     }
 
-    public void updatePosition(){
-        this.xPos += this.xVelocity;
-        this.yPos += this.yVelocity;
+    public void updatePosition(float deltaTime) {
+        // Atualizar posições com base nas velocidades
+
+        if (xVelocity < XMaxSpeed || xAcceleration < 0) {
+            xVelocity += (xAcceleration / weight);
+        }
+        if (yVelocity < YMaxSpeed || yAcceleration < 0) {
+            yVelocity += (yAcceleration / weight);
+        }
+        // Atualiza a posição com base na velocidade
+        xPos += (int) (xVelocity * deltaTime);
+        yPos += (int) (yVelocity * deltaTime);
+
     }
 
-    public BufferedImage getSprite(int x, int y, int width, int height){
+    public double getxAcceleration() {
+        return xAcceleration;
+    }
+
+    public void setxAcceleration(double xAcceleration) {
+        this.xAcceleration = xAcceleration;
+    }
+
+    public double getyAcceleration() {
+        return yAcceleration;
+    }
+
+    public void setyAcceleration(double yAcceleration) {
+        this.yAcceleration = yAcceleration;
+    }
+
+    public BufferedImage getSprite(int x, int y, int width, int height) {
         return spriteSheet.getSubimage(x, y, width, height);
     }
 
-    public BufferedImage getSpriteByIndex(int indexX, int indexY, int canvasWidth, int canvasHeight){
+    public BufferedImage getSpriteByIndex(int indexX, int indexY, int canvasWidth, int canvasHeight) {
         int x = (indexX * canvasWidth);
         int y = (indexY * canvasHeight);
         return spriteSheet.getSubimage(x, y, canvasWidth, canvasHeight);
@@ -47,6 +82,14 @@ public class Movable {
             lastFrameChangeTime = System.nanoTime(); // Reinicia o tempo
             elapsedTime = 0; // Reinicia o tempo decorrido
         }
+    }
+
+    public boolean isFacingForward() {
+        return facingForward;
+    }
+
+    public void setFacingForward(boolean facingForward) {
+        this.facingForward = facingForward;
     }
 
     public List<Sprite> getCurrentAnimation() {
@@ -73,6 +116,15 @@ public class Movable {
                 aniTick = 0; // Reinicia o índice se ultrapassar o tamanho
             }
         }
+    }
+
+    // Getters e Setters
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public int getxPos() {
@@ -129,5 +181,21 @@ public class Movable {
 
     public BufferedImage getSpriteSheet() {
         return spriteSheet;
+    }
+
+    public int getXMaxSpeed() {
+        return XMaxSpeed;
+    }
+
+    public void setXMaxSpeed(int XMaxSpeed) {
+        this.XMaxSpeed = XMaxSpeed;
+    }
+
+    public int getYMaxSpeed() {
+        return YMaxSpeed;
+    }
+
+    public void setYMaxSpeed(int YMaxSpeed) {
+        this.YMaxSpeed = YMaxSpeed;
     }
 }
