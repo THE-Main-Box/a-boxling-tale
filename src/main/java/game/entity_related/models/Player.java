@@ -14,6 +14,7 @@ public class Player extends Movable {
     private static final int RENDER_WIDTH = CANVAS_WIDTH * 2;
     private static final int RENDER_HEIGHT = CANVAS_HEIGHT * 2;
 
+
     private List<Sprite> idleAni = new ArrayList<>();
     private List<Sprite> runAni = new ArrayList<>();
     private List<Sprite> jumpAni = new ArrayList<>();
@@ -25,6 +26,8 @@ public class Player extends Movable {
 
         setXMaxSpeed(250);
         setYMaxSpeed(250);
+        setAccelerating(false);
+        setDeceleration(0.9);
 
         initializeIdleAni();
         initializeRunAnimation();
@@ -47,7 +50,7 @@ public class Player extends Movable {
     }
 
     private void initializeJumpPrepAnimation() {
-        jumpPrepAni.add(new Sprite(0, 3)); // Exemplo: Adicionar sprites para a animação de preparação
+        jumpPrepAni.add(new Sprite(0, 3));
         jumpPrepAni.add(new Sprite(0, 3));
     }
 

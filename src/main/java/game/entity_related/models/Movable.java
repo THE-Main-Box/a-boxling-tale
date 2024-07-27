@@ -10,6 +10,8 @@ public class Movable {
     protected double xVelocity, yVelocity;
     protected int XMaxSpeed, YMaxSpeed;
 
+    protected double deceleration;
+    protected boolean accelerating;
 
     protected double weight;
 
@@ -35,19 +37,58 @@ public class Movable {
     }
 
     public void updatePosition(float deltaTime) {
-        // Atualizar posições com base nas velocidades
+        // Atualiza a velocidade com base na aceleração
+        if (accelerating) {
+            if (xAcceleration != 0) {
+                xVelocity += (xAcceleration / weight);
+                // Limita a velocidade máxima
+                if (Math.abs(xVelocity) > XMaxSpeed) {
+                    xVelocity = XMaxSpeed * Math.signum(xVelocity);
+                }
+            }
+            if (yAcceleration != 0) {
+                yVelocity += (yAcceleration / weight);
+                // Limita a velocidade máxima
+                if (Math.abs(yVelocity) > YMaxSpeed) {
+                    yVelocity = YMaxSpeed * Math.signum(yVelocity);
+                }
+            }
+        } else {
+            // Desacelera a velocidade
+            xVelocity *= deceleration;
+            yVelocity *= deceleration;
 
-        if (xVelocity < XMaxSpeed || xAcceleration < 0) {
-            xVelocity += (xAcceleration / weight);
+            // Para evitar que a velocidade vá abaixo de um pequeno valor quando desacelerar
+            if (Math.abs(xVelocity) < 0.01) {
+                xVelocity = 0;
+            }
+            if (Math.abs(yVelocity) < 0.01) {
+                yVelocity = 0;
+            }
         }
-        if (yVelocity < YMaxSpeed || yAcceleration < 0) {
-            yVelocity += (yAcceleration / weight);
-        }
+
         // Atualiza a posição com base na velocidade
         xPos += (int) (xVelocity * deltaTime);
         yPos += (int) (yVelocity * deltaTime);
-
     }
+
+
+    public boolean isAccelerating() {
+        return accelerating;
+    }
+
+    public void setAccelerating(boolean accelerating) {
+        this.accelerating = accelerating;
+    }
+
+    public double getDeceleration() {
+        return deceleration;
+    }
+
+    public void setDeceleration(double deceleration) {
+        this.deceleration = deceleration;
+    }
+
 
     public double getxAcceleration() {
         return xAcceleration;

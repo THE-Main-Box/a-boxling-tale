@@ -46,12 +46,15 @@ public class GamePanel extends JPanel {
             player.setxAcceleration(acceleration);
 
             if (acceleration > 0) {
+                player.setAccelerating(true);
                 player.setFacingForward(true);
                 player.setAnimation(player.getRunAni());
             } else if (acceleration < 0) {
+                player.setAccelerating(true);
                 player.setFacingForward(false);
                 player.setAnimation(player.getRunAni());
             } else {
+                player.setAccelerating(false);
                 player.setAnimation(player.getIdleAni());
             }
 
