@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 public class GamePanel extends JPanel {
 
-    private Player player = new Player(0, 0, 52, 60, 10);
+    private Player player = new Player(0, 0, 52, 60, 5);
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
@@ -42,6 +42,7 @@ public class GamePanel extends JPanel {
 
     public void movePlayer(char direction, double acceleration) {
         if (direction == 'X') {
+            player.setAutoUpdateAni(true);
 
             player.setxAcceleration(acceleration);
 
@@ -59,7 +60,8 @@ public class GamePanel extends JPanel {
             }
 
         } else {
-
+                player.setAutoUpdateAni(false);
+                player.setCurrentSprite(player.getRunAni(), 5);
         }
     }
 
@@ -79,25 +81,31 @@ public class GamePanel extends JPanel {
 
         Sprite currentSprite = player.getCurrentSprite();
 
+        int spritePosX = 0;
+        int spritePosY = 0;
+        int spriteRenderWidth = 0;
+        int spriteRenderHeight = 0;
+
         if (player.isFacingForward()) {
-            g.drawImage(
-                    player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
-                    player.getxPos() - player.getOffsetX(),
-                    player.getyPos() - player.getOffsetY(),
-                    player.getRenderWidth(),
-                    player.getRenderHeight(),
-                    null
-            );
+            spritePosX = player.getxPos() - player.getOffsetX();
+            spritePosY = player.getyPos() - player.getOffsetY();
+            spriteRenderWidth = player.getRenderWidth();
+            spriteRenderHeight = player.getRenderHeight();
         } else {
-            g.drawImage(
-                    player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
-                    player.getxPos() + player.getCanvasWidth() - player.getOffsetX() / 2 + player.getWidth(),
-                    player.getyPos() - player.getOffsetY(),
-                    -player.getRenderWidth(),
-                    player.getRenderHeight(),
-                    null
-            );
+            spritePosX = player.getxPos() + player.getCanvasWidth() - player.getOffsetX() / 2 + player.getWidth();
+            spritePosY = player.getyPos() - player.getOffsetY();
+            spriteRenderWidth = -player.getRenderWidth();
+            spriteRenderHeight = player.getRenderHeight();
         }
+
+        g.drawImage(
+                player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
+                spritePosX,
+                spritePosY,
+                spriteRenderWidth,
+                spriteRenderHeight,
+                null
+        );
 
         g.drawRect(
                 player.getxPos(),

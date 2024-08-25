@@ -8,9 +8,9 @@ import java.util.List;
 public class Player extends Movable {
 
     private static final int CANVAS_WIDTH = 80;
-    private static final int CANVAS_HEIGHT = 40;
+    private static final int CANVAS_HEIGHT = 80;
     private static final int OFFSET_X = 54;
-    private static final int OFFSET_Y = 20;
+    private static final int OFFSET_Y = 60;
     private static final int RENDER_WIDTH = CANVAS_WIDTH * 2;
     private static final int RENDER_HEIGHT = CANVAS_HEIGHT * 2;
 
@@ -70,13 +70,6 @@ public class Player extends Movable {
         runAni.add(new Sprite(2, 2, 200));
         runAni.add(new Sprite(3, 2, 20));
     }
-
-//    @Override
-//    public void updateAnimation(float deltaTime) {
-//
-//
-//        super.updateAnimation(deltaTime);
-//    }
 
     public List<Sprite> getIdleAni() {
         return idleAni;
