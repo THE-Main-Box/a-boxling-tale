@@ -1,6 +1,7 @@
 package game.window_related;
 
 import game.entity_related.animation_related.Sprite;
+import game.entity_related.entity_controller.PlayerMovement;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
 import game.entity_related.models.Player;
@@ -14,12 +15,15 @@ import java.io.InputStream;
 public class GamePanel extends JPanel {
 
     private Player player = new Player(0, 0, 52, 60, 5);
+    private PlayerMovement playerMovement;
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
 
     public GamePanel() {
         importPlayerSpriteSheet();
+
+        playerMovement = new PlayerMovement(player);
 
         keyInputs = new KeyboardInput(this);
         mouseInputs = new MouseInput(this);
@@ -44,23 +48,14 @@ public class GamePanel extends JPanel {
     public void movePlayer(String playerAction) {
 
         if(playerAction.equals("move-right")){
-            player.setAutoUpdateAni(true);
-            player.setFacingForward(true);
-            player.setAccelerating(true);
-            player.setxAcceleration(50f);
-            player.setAnimation(player.getRunAni());
+            playerMovement.moveRight();
         }
         if(playerAction.equals("move-left")){
-            player.setAutoUpdateAni(true);
-            player.setFacingForward(false);
-            player.setAccelerating(true);
-            player.setxAcceleration(-50f);
-            player.setAnimation(player.getRunAni());
+            playerMovement.moveLeft();
         }
 
         if(playerAction.equals("stop-moving")){
-            player.setAccelerating(false);
-            player.setAnimation(player.getIdleAni());
+            playerMovement.stopMoving();
         }
 
     }
