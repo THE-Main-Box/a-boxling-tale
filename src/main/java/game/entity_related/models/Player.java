@@ -16,10 +16,11 @@ public class Player extends Movable {
 
 
     private List<Sprite> idleAni = new ArrayList<>();
+    private List<Sprite> walkAni = new ArrayList<>();
     private List<Sprite> runAni = new ArrayList<>();
+    private List<Sprite> jumpPrepAni = new ArrayList<>();
     private List<Sprite> jumpAni = new ArrayList<>();
     private List<Sprite> fallAni = new ArrayList<>();
-    private List<Sprite> jumpPrepAni = new ArrayList<>(); // Lista para animação de preparação para o pulo
 
     public Player(int posX, int posY, int width, int height, double weight) {
         super(posX, posY, width, height, weight);
@@ -29,13 +30,28 @@ public class Player extends Movable {
         setAccelerating(false);
         setDeceleration(0.9);
 
-        initializeIdleAni();
+        initializeIdleAnimation();
+        initializeWalkAnimation();
         initializeRunAnimation();
         initializeJumpAnimation();
         initializeFallAnimation();
         initializeJumpPrepAnimation(); // Inicializar animação de preparação para o pulo
 
         setAnimation(idleAni);
+    }
+
+    private void initializeWalkAnimation(){
+
+        // animação provisória
+        runAni.add(new Sprite(0, 1, 200));
+        runAni.add(new Sprite(1, 1, 20));
+        runAni.add(new Sprite(2, 1, 200));
+        runAni.add(new Sprite(3, 1, 20));
+
+        runAni.add(new Sprite(0, 2, 200));
+        runAni.add(new Sprite(1, 2, 20));
+        runAni.add(new Sprite(2, 2, 200));
+        runAni.add(new Sprite(3, 2, 20));
     }
 
     private void initializeFallAnimation(){
@@ -54,7 +70,7 @@ public class Player extends Movable {
         jumpPrepAni.add(new Sprite(0, 3));
     }
 
-    private void initializeIdleAni() {
+    private void initializeIdleAnimation() {
         idleAni.add(new Sprite(0, 0, 1000));
         idleAni.add(new Sprite(1, 0, 1000));
     }
@@ -89,6 +105,10 @@ public class Player extends Movable {
 
     public List<Sprite> getJumpPrepAni() {
         return jumpPrepAni;
+    }
+
+    public List<Sprite> getWalkAni() {
+        return walkAni;
     }
 
     public int getCanvasWidth() {

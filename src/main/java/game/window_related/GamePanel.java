@@ -30,6 +30,7 @@ public class GamePanel extends JPanel {
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
         addKeyListener(keyInputs);
+
     }
 
     private void setPanelSize() {
@@ -40,29 +41,28 @@ public class GamePanel extends JPanel {
         setMinimumSize(size);
     }
 
-    public void movePlayer(char direction, double acceleration) {
-        if (direction == 'X') {
+    public void movePlayer(String playerAction) {
+
+        if(playerAction.equals("move-right")){
             player.setAutoUpdateAni(true);
-
-            player.setxAcceleration(acceleration);
-
-            if (acceleration > 0) {
-                player.setAccelerating(true);
-                player.setFacingForward(true);
-                player.setAnimation(player.getRunAni());
-            } else if (acceleration < 0) {
-                player.setAccelerating(true);
-                player.setFacingForward(false);
-                player.setAnimation(player.getRunAni());
-            } else {
-                player.setAccelerating(false);
-                player.setAnimation(player.getIdleAni());
-            }
-
-        } else {
-                player.setAutoUpdateAni(false);
-                player.setCurrentSprite(player.getRunAni(), 5);
+            player.setFacingForward(true);
+            player.setAccelerating(true);
+            player.setxAcceleration(50f);
+            player.setAnimation(player.getRunAni());
         }
+        if(playerAction.equals("move-left")){
+            player.setAutoUpdateAni(true);
+            player.setFacingForward(false);
+            player.setAccelerating(true);
+            player.setxAcceleration(-50f);
+            player.setAnimation(player.getRunAni());
+        }
+
+        if(playerAction.equals("stop-moving")){
+            player.setAccelerating(false);
+            player.setAnimation(player.getIdleAni());
+        }
+
     }
 
     public void changePlayerPos(int x, int y) {

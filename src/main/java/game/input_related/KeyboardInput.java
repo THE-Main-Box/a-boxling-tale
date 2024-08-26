@@ -9,8 +9,6 @@ public class KeyboardInput implements KeyListener {
 
     private GamePanel gamePanel;
 
-    private double walkAcceleration = 100;
-    private double jumpForce = 20;
 
     public KeyboardInput(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -26,19 +24,16 @@ public class KeyboardInput implements KeyListener {
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                gamePanel.movePlayer('Y', -walkAcceleration);
                 break;
             case KeyEvent.VK_A:
-                gamePanel.movePlayer('X', -walkAcceleration);
+                gamePanel.movePlayer("move-left");
                 break;
             case KeyEvent.VK_S:
-                gamePanel.movePlayer('Y', walkAcceleration);
                 break;
             case KeyEvent.VK_D:
-                gamePanel.movePlayer('X', walkAcceleration);
+                gamePanel.movePlayer("move-right");
                 break;
             case KeyEvent.VK_SPACE:
-                gamePanel.movePlayer('Y', jumpForce);
                 break;
         }
 
@@ -49,19 +44,16 @@ public class KeyboardInput implements KeyListener {
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                gamePanel.movePlayer('Y', 0);
                 break;
             case KeyEvent.VK_A:
-                gamePanel.movePlayer('X', 0);
+                gamePanel.movePlayer("stop-moving");
                 break;
             case KeyEvent.VK_S:
-                gamePanel.movePlayer('Y', 0);
                 break;
             case KeyEvent.VK_D:
-                gamePanel.movePlayer('X', 0);
+                gamePanel.movePlayer("stop-moving");
                 break;
             case KeyEvent.VK_SPACE:
-                gamePanel.movePlayer('Y', 0);
                 break;
         }
 
