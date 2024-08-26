@@ -2,6 +2,7 @@ package game.window_related;
 
 import game.entity_related.animation_related.Sprite;
 import game.entity_related.entity_controller.PlayerMovement;
+import game.entity_related.models.Movement;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
 import game.entity_related.models.Player;
@@ -45,16 +46,16 @@ public class GamePanel extends JPanel {
         setMinimumSize(size);
     }
 
-    public void movePlayer(String playerAction) {
+    public void movePlayer(Movement playerDirection) {
 
-        if(playerAction.equals("move-right")){
+        if (playerDirection.equals(Movement.RIGHT)) {
             playerMovement.moveRight();
         }
-        if(playerAction.equals("move-left")){
+        if (playerDirection.equals(Movement.LEFT)) {
             playerMovement.moveLeft();
         }
 
-        if(playerAction.equals("stop-moving")){
+        if (playerDirection.equals(Movement.STOP)) {
             playerMovement.stopMoving();
         }
 
@@ -81,6 +82,8 @@ public class GamePanel extends JPanel {
         int spriteRenderWidth = 0;
         int spriteRenderHeight = 0;
 
+        /* verifica se o jogador está virado para frente ou para tras
+         * e altera os valores para manter os sprites centralizados*/
         if (player.isFacingForward()) {
             spritePosX = player.getxPos() - player.getOffsetX();
             spritePosY = player.getyPos() - player.getOffsetY();
@@ -94,15 +97,20 @@ public class GamePanel extends JPanel {
         }
 
         g.drawImage(
-                player.getSpriteByIndex(currentSprite.getIndexX(), currentSprite.getIndexY(), player.getCanvasWidth(), player.getCanvasHeight()),
-                spritePosX,
-                spritePosY,
-                spriteRenderWidth,
-                spriteRenderHeight,
+                player.getSpriteByIndex( //renderizo a imagem correspondente aos indexes do sprite atualna sprite-sheet
+                        currentSprite.getIndexX(),  // index x
+                        currentSprite.getIndexY(),  // index y
+                        player.getCanvasWidth(),    // tamanho da largura canvas com que foi desenhada a pixel art
+                        player.getCanvasHeight()    // tamanho da altura canvas com que foi desenhada a pixel art
+                ),
+                spritePosX,         //posição horizontal do sprite em relação à hitbox do jogador
+                spritePosY,         //posição vertical do sprite em relação à hitbox do jogador
+                spriteRenderWidth,  //largura de renderização do sprite
+                spriteRenderHeight, //altura de renderização do sprite
                 null
         );
 
-        g.drawRect(
+        g.drawRect( // mostra as dimensões do jogador
                 player.getxPos(),
                 player.getyPos(),
                 player.getWidth(),
@@ -110,7 +118,7 @@ public class GamePanel extends JPanel {
         );
     }
 
-    private void importPlayerSpriteSheet() {
+    private void importPlayerSpriteSheet() { // importa e define a sprite sheet do jogador direto da pasta resources
         try {
             InputStream inputStream = getClass().getResourceAsStream("/sprites/dex-sprites.png");
 

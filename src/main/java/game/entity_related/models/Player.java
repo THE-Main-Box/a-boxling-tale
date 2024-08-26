@@ -16,9 +16,9 @@ public class Player extends Movable {
 
 
     private List<Sprite> idleAni = new ArrayList<>();
-    private List<Sprite> walkAni = new ArrayList<>();
+    private List<Sprite> idleEyesClosedAni = new ArrayList<>();
+    private List<Sprite> damageAni = new ArrayList<>();
     private List<Sprite> runAni = new ArrayList<>();
-    private List<Sprite> jumpPrepAni = new ArrayList<>();
     private List<Sprite> jumpAni = new ArrayList<>();
     private List<Sprite> fallAni = new ArrayList<>();
 
@@ -28,46 +28,36 @@ public class Player extends Movable {
         setXMaxSpeed(250);
         setYMaxSpeed(250);
         setAccelerating(false);
-        setDeceleration(0.9);
+        setDeceleration(0.7);
 
         initializeIdleAnimation();
-        initializeWalkAnimation();
         initializeRunAnimation();
         initializeJumpAnimation();
         initializeFallAnimation();
-        initializeJumpPrepAnimation(); // Inicializar animação de preparação para o pulo
+        initializeIdleEyesClosedAnimation();
+        initializeDamageAnimation();
 
         setAnimation(idleAni);
     }
 
-    private void initializeWalkAnimation(){
-
-        // animação provisória
-        runAni.add(new Sprite(0, 1, 200));
-        runAni.add(new Sprite(1, 1, 20));
-        runAni.add(new Sprite(2, 1, 200));
-        runAni.add(new Sprite(3, 1, 20));
-
-        runAni.add(new Sprite(0, 2, 200));
-        runAni.add(new Sprite(1, 2, 20));
-        runAni.add(new Sprite(2, 2, 200));
-        runAni.add(new Sprite(3, 2, 20));
-    }
-
-    private void initializeFallAnimation(){
+    private void initializeFallAnimation() {
         fallAni.add(new Sprite(2, 3));
         fallAni.add(new Sprite(3, 3));
-        fallAni.add(new Sprite(0, 3));
     }
 
     private void initializeJumpAnimation() {
         jumpAni.add(new Sprite(0, 3));
-        jumpAni.add(new Sprite(1, 4));
+        jumpAni.add(new Sprite(1, 3));
     }
 
-    private void initializeJumpPrepAnimation() {
-        jumpPrepAni.add(new Sprite(0, 3));
-        jumpPrepAni.add(new Sprite(0, 3));
+    private void initializeIdleEyesClosedAnimation() {
+        idleEyesClosedAni.add(new Sprite(2, 0, 1000));
+        idleEyesClosedAni.add(new Sprite(3, 0, 1000));
+    }
+
+    private void initializeDamageAnimation() {
+        damageAni.add(new Sprite(0, 4, 300));
+        damageAni.add(new Sprite(3, 0, 200));
     }
 
     private void initializeIdleAnimation() {
@@ -103,12 +93,12 @@ public class Player extends Movable {
         return fallAni;
     }
 
-    public List<Sprite> getJumpPrepAni() {
-        return jumpPrepAni;
+    public List<Sprite> getIdleEyesClosedAni() {
+        return idleEyesClosedAni;
     }
 
-    public List<Sprite> getWalkAni() {
-        return walkAni;
+    public List<Sprite> getDamageAni() {
+        return damageAni;
     }
 
     public int getCanvasWidth() {

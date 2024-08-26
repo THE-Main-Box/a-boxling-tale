@@ -1,5 +1,6 @@
 package game.input_related;
 
+import game.entity_related.models.Movement;
 import game.window_related.GamePanel;
 
 import java.awt.event.KeyEvent;
@@ -26,12 +27,12 @@ public class KeyboardInput implements KeyListener {
             case KeyEvent.VK_W:
                 break;
             case KeyEvent.VK_A:
-                gamePanel.movePlayer("move-left");
+                gamePanel.movePlayer(Movement.LEFT);
                 break;
             case KeyEvent.VK_S:
                 break;
             case KeyEvent.VK_D:
-                gamePanel.movePlayer("move-right");
+                gamePanel.movePlayer(Movement.RIGHT);
                 break;
             case KeyEvent.VK_SPACE:
                 break;
@@ -46,12 +47,12 @@ public class KeyboardInput implements KeyListener {
             case KeyEvent.VK_W:
                 break;
             case KeyEvent.VK_A:
-                gamePanel.movePlayer("stop-moving");
+                gamePanel.movePlayer(Movement.STOP);
                 break;
             case KeyEvent.VK_S:
                 break;
             case KeyEvent.VK_D:
-                gamePanel.movePlayer("stop-moving");
+                gamePanel.movePlayer(Movement.STOP);
                 break;
             case KeyEvent.VK_SPACE:
                 break;
