@@ -31,15 +31,27 @@ public class Game implements Runnable {
         long lastFrameTime = System.nanoTime();
         long lastUpdateTime = System.nanoTime();
         long now;
+
+        long lastCheck = System.currentTimeMillis();
+
         double timePerFrame = 1000000000.0 / FPS_SET;
         double timePerUpdate = 1000000000.0 / UPS_SET;
+        double deltaTime;
 
         int frames = 0;
         int updates = 0;
-        long lastCheck = System.currentTimeMillis();
 
         while (true) {
             now = System.nanoTime();
+
+            deltaTime = (now - lastUpdateTime) / 1000000000.0; // Convertendo para segundos
+
+            // UPS Logic
+            if (now - lastUpdateTime >= timePerUpdate) {
+                gamePanel.updateGame((float) deltaTime); // Passa deltaTime real para o GamePanel
+                lastUpdateTime = now;
+                updates++;
+            }
 
             // FPS Logic
             if (now - lastFrameTime >= timePerFrame) {
@@ -48,13 +60,6 @@ public class Game implements Runnable {
                 frames++;
             }
 
-            // UPS Logic
-            if (now - lastUpdateTime >= timePerUpdate) {
-                double deltaTime = (now - lastUpdateTime) / 1000000000.0; // Convertendo para segundos
-                gamePanel.updateGame((float) deltaTime); // Passa deltaTime real para o GamePanel
-                lastUpdateTime = now;
-                updates++;
-            }
 
             // FPS and UPS Display
             if (System.currentTimeMillis() - lastCheck >= 1000) {
@@ -63,6 +68,7 @@ public class Game implements Runnable {
                 frames = 0;
                 updates = 0;
             }
+
         }
     }
 }

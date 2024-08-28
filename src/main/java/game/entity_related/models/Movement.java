@@ -5,5 +5,6 @@ public enum Movement {
     DOWN,
     LEFT,
     RIGHT,
-    STOP
+    STOP,
+    JUMP
 }

@@ -25,11 +25,13 @@ public class KeyboardInput implements KeyListener {
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
+                gamePanel.movePlayer(Movement.UP);
                 break;
             case KeyEvent.VK_A:
                 gamePanel.movePlayer(Movement.LEFT);
                 break;
             case KeyEvent.VK_S:
+                gamePanel.movePlayer(Movement.DOWN);
                 break;
             case KeyEvent.VK_D:
                 gamePanel.movePlayer(Movement.RIGHT);
@@ -44,14 +46,10 @@ public class KeyboardInput implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                break;
-            case KeyEvent.VK_A:
-                gamePanel.movePlayer(Movement.STOP);
-                break;
-            case KeyEvent.VK_S:
-                break;
-            case KeyEvent.VK_D:
+            case KeyEvent.VK_W,
+                 KeyEvent.VK_A,
+                 KeyEvent.VK_S,
+                 KeyEvent.VK_D:
                 gamePanel.movePlayer(Movement.STOP);
                 break;
             case KeyEvent.VK_SPACE:
