@@ -107,7 +107,7 @@ public class GamePanel extends JPanel {
 
     }
 
-    private void updateRenderVariables(){
+    private void updateRenderVariables() {
         /* verifica se o jogador está virado para frente ou para tras
          * e altera os valores para manter os sprites centralizados*/
         if (player.isFacingForward()) {
@@ -123,7 +123,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void renderPLayerBody(Graphics g){
+    private void renderPLayerBody(Graphics g) {
         renderer.renderPlayer(
                 g,
                 player.getSpriteByIndex(
@@ -141,7 +141,7 @@ public class GamePanel extends JPanel {
         );
     }
 
-    private void renderPLayerHead(Graphics g){
+    private void renderPLayerHead(Graphics g) {
         renderer.renderPlayer(
                 g,
                 player.getSpriteByIndex(
@@ -159,14 +159,37 @@ public class GamePanel extends JPanel {
         );
     }
 
+    private void renderPLayerWeapon(Graphics g) {
+        renderer.renderPlayer(
+                g,
+                player.getSpriteByIndex(
+                        player.getCurrentWeaponSprite().getIndexX(),
+                        player.getCurrentWeaponSprite().getIndexY(),
+                        player.GET_CANVAS_WIDTH(),
+                        player.GET_CANVAS_HEIGHT(),
+                        player.getDexGunSprite()
+                ),
+                spritePosX,
+                spritePosY,
+                spriteRenderWidth,
+                spriteRenderHeight,
+                null
+        );
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         updateRenderVariables();
 
-        renderPLayerHead(g);
         renderPLayerBody(g);
+        renderPLayerHead(g);
+
+        if (player.isShowingWeapon() && player.getCurrentWeaponAnimation() != null) {
+            renderPLayerWeapon(g);
+        }
+
 
         g.drawRect( // mostra as dimensões do jogador
                 player.getxPos(),

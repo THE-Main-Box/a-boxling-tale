@@ -91,7 +91,8 @@ public class PlayerController {
         player.setShowingWeapon(true);
         player.setAttacking(true);
         player.setUsingWeapon(true);
-//        player.setCurrentAttackAnimation(player.getDexGunFowardAni());
+
+        player.setCurrentWeaponAnimation("gun-fwd");
     }
 
     public void shootDownward(){
@@ -105,7 +106,9 @@ public class PlayerController {
         player.setShowingWeapon(true);
         player.setAttacking(true);
         player.setUsingWeapon(true);
-//        player.setCurrentAttackAnimation(player.getDexGunDownAni());
+
+        player.setCurrentWeaponAnimation("gun-dwd");
+
     }
 
     public void shootUpward(){
@@ -119,7 +122,9 @@ public class PlayerController {
         player.setShowingWeapon(true);
         player.setAttacking(true);
         player.setUsingWeapon(true);
-//        player.setCurrentAttackAnimation(player.getDexGunUpAni());
+
+        player.setCurrentWeaponAnimation("gun-uwd");
+
     }
 
 }
