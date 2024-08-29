@@ -2,7 +2,7 @@ package game.window_related;
 
 import game.entity_related.animation_related.GameObjectRenderer;
 import game.entity_related.animation_related.Sprite;
-import game.entity_related.entity_controller.PlayerMovement;
+import game.entity_related.entity_controller.PlayerController;
 import game.entity_related.models.Movement;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
@@ -17,16 +17,21 @@ import java.io.InputStream;
 public class GamePanel extends JPanel {
 
     private Player player = new Player(0, 0, 52, 60, 5);
-    private PlayerMovement playerMovement;
+    private PlayerController playerController;
     private GameObjectRenderer renderer = new GameObjectRenderer();
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
 
+    private int spritePosX;
+    private int spritePosY;
+    private int spriteRenderWidth;
+    private int spriteRenderHeight;
+
     public GamePanel() {
         importPlayerSpriteSheet();
 
-        playerMovement = new PlayerMovement(player);
+        playerController = new PlayerController(player);
 
         keyInputs = new KeyboardInput(this);
         mouseInputs = new MouseInput(this);
@@ -38,11 +43,6 @@ public class GamePanel extends JPanel {
         addMouseMotionListener(mouseInputs);
         addKeyListener(keyInputs);
 
-        player.setCurrentAttackAnimation(player.getDexGunFowardAni());
-
-        player.setShowingGun(true);
-        player.setUsingWeapon(true);
-        player.setAttacking(true);
     }
 
     private void setPanelSize() {
@@ -56,20 +56,41 @@ public class GamePanel extends JPanel {
     public void movePlayer(Movement playerDirection) {
 
         if (playerDirection.equals(Movement.RIGHT)) {
-            playerMovement.moveRight();
+            playerController.moveRight();
         }
         if (playerDirection.equals(Movement.LEFT)) {
-            playerMovement.moveLeft();
+            playerController.moveLeft();
         }
         if (playerDirection.equals(Movement.UP)) {
-            playerMovement.moveUp();
+            playerController.moveUp();
         }
         if (playerDirection.equals(Movement.DOWN)) {
-            playerMovement.moveDown();
+            playerController.moveDown();
         }
 
         if (playerDirection.equals(Movement.STOP)) {
-            playerMovement.stopMoving();
+            playerController.stopMoving();
+        }
+
+    }
+
+    public void attack(int x, int y) {
+        if (player.getxPos() + (player.getWidth() / 2) > x) {
+            player.setFacingForward(false);
+            playerController.shootFoward();
+        } else if (player.getxPos() + (player.getWidth() / 2) < x) {
+            player.setFacingForward(true);
+            playerController.shootFoward();
+        }
+
+        if (player.getyPos() > y) {
+
+            playerController.shootUpward();
+
+        } else if (player.getyPos() + player.getHeight() < y) {
+
+            playerController.shootDownward();
+
         }
 
     }
@@ -80,70 +101,72 @@ public class GamePanel extends JPanel {
     }
 
     public void updateGame(float deltaTime) {
-        player.updateAnimation(deltaTime); // Atualiza a animação do jogador com deltaTime
-        player.updatePosition(deltaTime);  // Atualiza a posição do jogador com delta time
+        player.updateAnimation(deltaTime);          // Atualiza a animação do jogador com deltaTime
+        player.updatePosition(deltaTime);           // Atualiza a posição do jogador
 
-        if (player.isAttacking()) {
-            player.updateAttackAnimation(deltaTime);
+
+    }
+
+    private void updateRenderVariables(){
+        /* verifica se o jogador está virado para frente ou para tras
+         * e altera os valores para manter os sprites centralizados*/
+        if (player.isFacingForward()) {
+            spritePosX = player.getxPos() - player.GET_OFFSET_X();
+            spritePosY = player.getyPos() - player.GET_OFFSET_Y();
+            spriteRenderWidth = player.GET_RENDER_WIDTH();
+            spriteRenderHeight = player.GET_RENDER_HEIGHT();
+        } else {
+            spritePosX = player.getxPos() + player.GET_CANVAS_WIDTH() - player.GET_OFFSET_X() / 2 + player.getWidth();
+            spritePosY = player.getyPos() - player.GET_OFFSET_Y();
+            spriteRenderWidth = -player.GET_RENDER_WIDTH();
+            spriteRenderHeight = player.GET_RENDER_HEIGHT();
         }
+    }
+
+    private void renderPLayerBody(Graphics g){
+        renderer.renderPlayer(
+                g,
+                player.getSpriteByIndex(
+                        player.getCurrentBodySprite().getIndexX(),
+                        player.getCurrentBodySprite().getIndexY(),
+                        player.GET_CANVAS_WIDTH(),
+                        player.GET_CANVAS_HEIGHT(),
+                        player.getBodySpriteSheet()
+                ),
+                spritePosX,
+                spritePosY,
+                spriteRenderWidth,
+                spriteRenderHeight,
+                null
+        );
+    }
+
+    private void renderPLayerHead(Graphics g){
+        renderer.renderPlayer(
+                g,
+                player.getSpriteByIndex(
+                        player.getCurrentHeadSprite().getIndexX(),
+                        player.getCurrentHeadSprite().getIndexY(),
+                        player.GET_CANVAS_WIDTH(),
+                        player.GET_CANVAS_HEIGHT(),
+                        player.getHeadSpriteSheet()
+                ),
+                spritePosX,
+                spritePosY,
+                spriteRenderWidth,
+                spriteRenderHeight,
+                null
+        );
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Sprite currentSprite = player.getCurrentSprite();
+        updateRenderVariables();
 
-        int spritePosX;
-        int spritePosY;
-        int spriteRenderWidth;
-        int spriteRenderHeight;
-
-        /* verifica se o jogador está virado para frente ou para tras
-         * e altera os valores para manter os sprites centralizados*/
-        if (player.isFacingForward()) {
-            spritePosX = player.getxPos() - player.getOffsetX();
-            spritePosY = player.getyPos() - player.getOffsetY();
-            spriteRenderWidth = player.getRenderWidth();
-            spriteRenderHeight = player.getRenderHeight();
-        } else {
-            spritePosX = player.getxPos() + player.getCanvasWidth() - player.getOffsetX() / 2 + player.getWidth();
-            spritePosY = player.getyPos() - player.getOffsetY();
-            spriteRenderWidth = -player.getRenderWidth();
-            spriteRenderHeight = player.getRenderHeight();
-        }
-
-        renderer.renderPlayer(
-                g,
-                player.getSpriteByIndex( //renderizo a imagem correspondente aos indexes do sprite atual na sprite-sheet
-                        currentSprite.getIndexX(),  // index x do sprite no canvas
-                        currentSprite.getIndexY(),  // index y do sprite no canvas
-                        player.getCanvasWidth(),    // tamanho da largura canvas com que foi desenhado o sprite
-                        player.getCanvasHeight(),   // tamanho da altura canvas com que foi desenhado o sprite
-                        player.getSpriteSheet()
-                ),
-                spritePosX,         //posição horizontal do sprite em relação à hitbox do jogador
-                spritePosY,         //posição vertical do sprite em relação à hitbox do jogador
-                spriteRenderWidth,  //largura de renderização do sprite
-                spriteRenderHeight, //altura de renderização do sprite
-                null
-        );
-
-
-        if(player.isUsingWeapon() && player.isShowingGun()) {
-            renderer.renderPlayer(
-                    g,
-                    player.getGunSpriteByIndex(
-                            player.getCurrentAttackSprite().getIndexX(),
-                            player.getCurrentAttackSprite().getIndexY()
-                    ),
-                    spritePosX,
-                    spritePosY,
-                    spriteRenderWidth,
-                    spriteRenderHeight,
-                    null
-            );
-        }
+        renderPLayerHead(g);
+        renderPLayerBody(g);
 
         g.drawRect( // mostra as dimensões do jogador
                 player.getxPos(),
@@ -156,13 +179,18 @@ public class GamePanel extends JPanel {
     private void importPlayerSpriteSheet() { // importa e define a sprite sheet do jogador direto da pasta resources
         try {
             InputStream rockGround = getClass().getResourceAsStream("/sprites/rock-ground-tile-map.png");
-            InputStream dexSprites = getClass().getResourceAsStream("/sprites/dex-sprites.png");
+            InputStream dexBodySprites = getClass().getResourceAsStream("/sprites/dex-body-sprites.png");
+            InputStream dexHeadSprites = getClass().getResourceAsStream("/sprites/dex-head-sprites.png");
             InputStream dexGunSprites = getClass().getResourceAsStream("/sprites/dex-gun.png");
 
             assert rockGround != null;
-            assert dexSprites != null;
+            assert dexHeadSprites != null;
+            assert dexBodySprites != null;
 
-            player.setSpriteSheet(ImageIO.read(dexSprites));
+
+            player.setBodySpriteSheet(ImageIO.read(dexBodySprites));
+            player.setHeadSpriteSheet(ImageIO.read(dexHeadSprites));
+
             player.setDexGunSprite(ImageIO.read(dexGunSprites));
 
         } catch (IOException e) {

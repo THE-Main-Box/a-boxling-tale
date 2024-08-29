@@ -1,5 +1,6 @@
 package game.entity_related.models.entities;
 
+import game.entity_related.animation_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.Sprite;
 
 import java.awt.image.BufferedImage;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class Player extends Movable {
 
+    // Constantes de configuração
     private static final int CANVAS_WIDTH = 80;
     private static final int CANVAS_HEIGHT = 80;
     private static final int OFFSET_X = 54;
@@ -15,25 +17,30 @@ public class Player extends Movable {
     private static final int RENDER_WIDTH = CANVAS_WIDTH * 2;
     private static final int RENDER_HEIGHT = CANVAS_HEIGHT * 2;
 
-    private boolean showingGun = false;
+    // Flags de estado
+    private boolean showingWeapon = false;
     private boolean attacking = false;
     private boolean usingWeapon = false;
 
+    // Sprites e animações
     private BufferedImage dexGunSprite;
+    private BufferedImage bodySpriteSheet;
+    private BufferedImage headSpriteSheet;
 
-    private int attackAniTick;
-    private float attackFrameElapsedTime;
-    private float attackFrameDuration;
-    private Sprite currentAttackSprite;
+    private ObjectAnimationPlayer weaponAniPlayer = new ObjectAnimationPlayer();
+    private ObjectAnimationPlayer bodyAniPlayer = new ObjectAnimationPlayer();
+    private ObjectAnimationPlayer headAniPlayer = new ObjectAnimationPlayer();
 
-    private List<Sprite> currentAttackAnimation = new ArrayList<>();
-
-    private List<Sprite> idleAni = new ArrayList<>();
-    private List<Sprite> idleEyesClosedAni = new ArrayList<>();
-    private List<Sprite> damageAni = new ArrayList<>();
-    private List<Sprite> runAni = new ArrayList<>();
-    private List<Sprite> jumpAni = new ArrayList<>();
-    private List<Sprite> fallAni = new ArrayList<>();
+    private List<Sprite> idleBodyAni = new ArrayList<>();
+    private List<Sprite> idleHeadAni = new ArrayList<>();
+    private List<Sprite> damageHeadAni = new ArrayList<>();
+    private List<Sprite> damageBodyAni = new ArrayList<>();
+    private List<Sprite> runBodyAni = new ArrayList<>();
+    private List<Sprite> runHeadAni = new ArrayList<>();
+    private List<Sprite> jumpBodyAni = new ArrayList<>();
+    private List<Sprite> jumpHeadAni = new ArrayList<>();
+    private List<Sprite> fallHeadAni = new ArrayList<>();
+    private List<Sprite> fallBodyAni = new ArrayList<>();
     private List<Sprite> dexGunUpAni = new ArrayList<>();
     private List<Sprite> dexGunDownAni = new ArrayList<>();
     private List<Sprite> dexGunFowardAni = new ArrayList<>();
@@ -46,185 +53,188 @@ public class Player extends Movable {
         setAccelerating(false);
         setDeceleration(0.7);
 
+        // Inicialização das animações
         initializeDexGunAnimations();
         initializeIdleAnimation();
         initializeRunAnimation();
         initializeJumpAnimation();
         initializeFallAnimation();
-        initializeIdleEyesClosedAnimation();
         initializeDamageAnimation();
 
+        setCurrentBodyAnimation("idle");
+        setCurrentHeadAnimation("idle");
 
-        setAnimation(idleAni);
     }
 
+    // Método para inicializar as animações da arma de Dex
     private void initializeDexGunAnimations() {
-        dexGunDownAni.add(new Sprite(4, 0, 200));
-        dexGunDownAni.add(new Sprite(5, 0, 200));
+        dexGunFowardAni.add(new Sprite(0, 0, 20));
+        dexGunFowardAni.add(new Sprite(1, 0, 20));
+        dexGunFowardAni.add(new Sprite(2, 0, 20));
 
-        dexGunFowardAni.add(new Sprite(0, 0, 200));
-        dexGunFowardAni.add(new Sprite(1, 0, 200));
+        dexGunUpAni.add(new Sprite(3, 0, 20));
+        dexGunUpAni.add(new Sprite(4, 0, 20));
+        dexGunUpAni.add(new Sprite(5, 0, 20));
 
-        dexGunUpAni.add(new Sprite(2, 0, 200));
-        dexGunUpAni.add(new Sprite(3, 0, 200));
+        dexGunDownAni.add(new Sprite(6, 0, 20));
+        dexGunDownAni.add(new Sprite(7, 0, 20));
+        dexGunDownAni.add(new Sprite(8, 0, 20));
+
+        weaponAniPlayer.addAnimation("gun-fwd", dexGunFowardAni);
+        weaponAniPlayer.addAnimation("gun-uwd", dexGunUpAni);
+        weaponAniPlayer.addAnimation("gun-dwd", dexGunDownAni);
     }
 
+    // Método para inicializar as animações de queda
     private void initializeFallAnimation() {
-        fallAni.add(new Sprite(2, 3));
-        fallAni.add(new Sprite(3, 3));
+        fallHeadAni.add(new Sprite(2, 3));
+        fallHeadAni.add(new Sprite(3, 3));
+
+        fallBodyAni.add(new Sprite(2, 3));
+        fallBodyAni.add(new Sprite(3, 3));
+
+        bodyAniPlayer.addAnimation("fall", fallBodyAni);
+        headAniPlayer.addAnimation("fall", fallHeadAni);
     }
 
+    // Método para inicializar as animações de pulo
     private void initializeJumpAnimation() {
-        jumpAni.add(new Sprite(0, 3));
-        jumpAni.add(new Sprite(1, 3));
+        jumpBodyAni.add(new Sprite(0, 3));
+        jumpBodyAni.add(new Sprite(1, 3));
+
+        jumpHeadAni.add(new Sprite(0, 3));
+        jumpHeadAni.add(new Sprite(1, 3));
+
+        bodyAniPlayer.addAnimation("jump", jumpBodyAni);
+        headAniPlayer.addAnimation("jump", jumpHeadAni);
     }
 
-    private void initializeIdleEyesClosedAnimation() {
-        idleEyesClosedAni.add(new Sprite(2, 0, 1000));
-        idleEyesClosedAni.add(new Sprite(3, 0, 1000));
-    }
-
+    // Método para inicializar as animações de dano
     private void initializeDamageAnimation() {
-        damageAni.add(new Sprite(0, 4, 300));
-        damageAni.add(new Sprite(3, 0, 200));
+        damageHeadAni.add(new Sprite(0, 4, 300));
+        damageHeadAni.add(new Sprite(3, 0, 200));
+
+        damageBodyAni.add(new Sprite(0, 4, 300));
+        damageBodyAni.add(new Sprite(3, 0, 200));
+
+        bodyAniPlayer.addAnimation("dmg", damageBodyAni);
+        headAniPlayer.addAnimation("dmg", damageHeadAni);
     }
 
+    // Método para inicializar as animações de idle
     private void initializeIdleAnimation() {
-        idleAni.add(new Sprite(0, 0, 1000));
-        idleAni.add(new Sprite(1, 0, 1000));
+        idleBodyAni.add(new Sprite(0, 0, 1000));
+        idleBodyAni.add(new Sprite(1, 0, 1000));
+
+        idleHeadAni.add(new Sprite(0, 0, 1000));
+        idleHeadAni.add(new Sprite(1, 0, 1000));
+
+        bodyAniPlayer.addAnimation("idle", idleBodyAni);
+        headAniPlayer.addAnimation("idle", idleHeadAni);
     }
 
+    // Método para inicializar as animações de corrida
     private void initializeRunAnimation() {
-        runAni.add(new Sprite(0, 1, 200));
-        runAni.add(new Sprite(1, 1, 20));
-        runAni.add(new Sprite(2, 1, 200));
-        runAni.add(new Sprite(3, 1, 20));
+        runBodyAni.add(new Sprite(0, 1, 200));
+        runBodyAni.add(new Sprite(1, 1, 20));
+        runBodyAni.add(new Sprite(2, 1, 200));
+        runBodyAni.add(new Sprite(3, 1, 20));
 
-        runAni.add(new Sprite(0, 2, 200));
-        runAni.add(new Sprite(1, 2, 20));
-        runAni.add(new Sprite(2, 2, 200));
-        runAni.add(new Sprite(3, 2, 20));
+        runBodyAni.add(new Sprite(0, 2, 200));
+        runBodyAni.add(new Sprite(1, 2, 20));
+        runBodyAni.add(new Sprite(2, 2, 200));
+        runBodyAni.add(new Sprite(3, 2, 20));
+
+        runHeadAni.add(new Sprite(0, 1, 200));
+        runHeadAni.add(new Sprite(1, 1, 20));
+        runHeadAni.add(new Sprite(2, 1, 200));
+        runHeadAni.add(new Sprite(3, 1, 20));
+
+        runHeadAni.add(new Sprite(0, 2, 200));
+        runHeadAni.add(new Sprite(1, 2, 20));
+        runHeadAni.add(new Sprite(2, 2, 200));
+        runHeadAni.add(new Sprite(3, 2, 20));
+
+
+        bodyAniPlayer.addAnimation("run", runBodyAni);
+        headAniPlayer.addAnimation("run", runHeadAni);
     }
 
+    // Método para atualizar a animação de ataque
 
-    public void updateAttackAnimation(float deltaTime) {
-        if (currentAttackAnimation == null || currentAttackAnimation.isEmpty()) {
-            return;
-        }
-
-        if (usingWeapon && !attacking) {
-            attackAniTick = 0;
-        }
-
-        if (!attacking) {
-            return;
-        }
-
-        attackFrameElapsedTime += deltaTime;
-        currentAttackSprite = getCurrentAttackSprite();
-        float attackFrameDuration = currentAttackSprite.getDuration() / 1000.0f;
-
-        if (attackFrameElapsedTime >= attackFrameDuration) {
-            attackAniTick++;
-            attackFrameElapsedTime -= attackFrameDuration;
-
-            if (attackAniTick >= currentAttackAnimation.size()) {
-                attackAniTick = 0;
-            }
-
-        }
-
+    // Método para atualizar as animações automaticamente
+    public void updateAnimation(float deltaTime) {
+        bodyAniPlayer.update(deltaTime);
+        headAniPlayer.update(deltaTime);
+        weaponAniPlayer.update(deltaTime);
     }
 
-    public Sprite getCurrentAttackSprite() {
-        return currentAttackAnimation.get(attackAniTick);
+    public void setAutoUpdateBodyAnimation(boolean autoUpdate){
+        bodyAniPlayer.setAutoUpdateAni(autoUpdate);
     }
 
-    public List<Sprite> getDexGunUpAni() {
-        return dexGunUpAni;
+    public void setAutoUpdateHeadAnimation(boolean autoUpdate){
+        headAniPlayer.setAutoUpdateAni(autoUpdate);
     }
 
-    public List<Sprite> getDexGunDownAni() {
-        return dexGunDownAni;
+    public void setAutoUpdateWeaponAnimation(boolean autoUpdate){
+        weaponAniPlayer.setAutoUpdateAni(autoUpdate);
     }
 
-    public List<Sprite> getDexGunFowardAni() {
-        return dexGunFowardAni;
+    public void setCurrentHeadAnimation(String animationTitle){
+        headAniPlayer.setAnimation(animationTitle);
     }
 
-    public List<Sprite> getIdleAni() {
-        return idleAni;
+    public void setCurrentBodyAnimation(String animationTitle){
+        bodyAniPlayer.setAnimation(animationTitle);
     }
 
-    public List<Sprite> getRunAni() {
-        return runAni;
+    public void setCurrentWeaponAnimation(String animationTitle){
+        weaponAniPlayer.setAnimation(animationTitle);
     }
 
-    public List<Sprite> getJumpAni() {
-        return jumpAni;
+    public void setCurrentBodySprite(String animationKey, int index){
+        bodyAniPlayer.setCurrentSprite(animationKey, index);
     }
 
-    public List<Sprite> getFallAni() {
-        return fallAni;
+    public void setCurrentHeadSprite(String animationKey, int index){
+        headAniPlayer.setCurrentSprite(animationKey, index);
     }
 
-    public List<Sprite> getIdleEyesClosedAni() {
-        return idleEyesClosedAni;
+    public void setCurrentWeaponSprite(String animationKey, int index){
+        weaponAniPlayer.setCurrentSprite(animationKey, index);
     }
 
-    public List<Sprite> getDamageAni() {
-        return damageAni;
+    public Sprite getCurrentBodySprite(){
+        return bodyAniPlayer.getCurrentSprite();
     }
 
-    public int getCanvasWidth() {
-        return CANVAS_WIDTH;
+    public Sprite getCurrentHeadSprite(){
+        return headAniPlayer.getCurrentSprite();
     }
 
-    public int getCanvasHeight() {
-        return CANVAS_HEIGHT;
-    }
-
-    public int getOffsetX() {
-        return OFFSET_X;
-    }
-
-    public int getOffsetY() {
-        return OFFSET_Y;
-    }
-
-    public int getRenderWidth() {
-        return RENDER_WIDTH;
-    }
-
-    public int getRenderHeight() {
-        return RENDER_HEIGHT;
-    }
-
-
-    public List<Sprite> getCurrentAttackAnimation() {
-        return currentAttackAnimation;
-    }
-
-    public void setCurrentAttackAnimation(List<Sprite> currentAttackAnimation) {
-        this.currentAttackAnimation = currentAttackAnimation;
-        attackAniTick = 0;
-        attackFrameElapsedTime = 0;
+    public Sprite getCurrentWeaponSprite(){
+        return weaponAniPlayer.getCurrentSprite();
     }
 
     public BufferedImage getDexGunSprite() {
         return dexGunSprite;
     }
 
-    public void setDexGunSprite(BufferedImage dexGunSprite) {
-        this.dexGunSprite = dexGunSprite;
+    public BufferedImage getBodySpriteSheet() {
+        return bodySpriteSheet;
     }
 
-    public boolean isShowingGun() {
-        return showingGun;
+    public BufferedImage getHeadSpriteSheet() {
+        return headSpriteSheet;
     }
 
-    public void setShowingGun(boolean showingGun) {
-        this.showingGun = showingGun;
+    public boolean isShowingWeapon() {
+        return showingWeapon;
+    }
+
+    public void setShowingWeapon(boolean showingWeapon) {
+        this.showingWeapon = showingWeapon;
     }
 
     public boolean isAttacking() {
@@ -243,12 +253,104 @@ public class Player extends Movable {
         this.usingWeapon = usingWeapon;
     }
 
-    public void setCurrentAttackSprite(Sprite currentAttackSprite) {
-        this.currentAttackSprite = currentAttackSprite;
+    public List<Sprite> getCurrentHeadAnimation() {
+        return headAniPlayer.getCurrentAnimation();
     }
 
-    public BufferedImage getGunSpriteByIndex(int x, int y) {
-        return dexGunSprite.getSubimage(x * CANVAS_WIDTH, y * CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT);
+    public List<Sprite> getCurrentBodyAnimation() {
+        return bodyAniPlayer.getCurrentAnimation();
+    }
+
+    public List<Sprite> getCurrentWeaponAnimation() {
+        return weaponAniPlayer.getCurrentAnimation();
+    }
+
+    public void setDexGunSprite(BufferedImage dexGunSprite) {
+        this.dexGunSprite = dexGunSprite;
+    }
+
+    public void setBodySpriteSheet(BufferedImage bodySpriteSheet) {
+        this.bodySpriteSheet = bodySpriteSheet;
+    }
+
+    public void setHeadSpriteSheet(BufferedImage headSpriteSheet) {
+        this.headSpriteSheet = headSpriteSheet;
+    }
+
+    public List<Sprite> getIdleBodyAni() {
+        return idleBodyAni;
+    }
+
+    public List<Sprite> getIdleHeadAni() {
+        return idleHeadAni;
+    }
+
+    public List<Sprite> getDamageBodyAni() {
+        return damageBodyAni;
+    }
+
+    public List<Sprite> getDamageHeadAni() {
+        return damageHeadAni;
+    }
+
+    public List<Sprite> getRunBodyAni() {
+        return runBodyAni;
+    }
+
+    public List<Sprite> getRunHeadAni() {
+        return runHeadAni;
+    }
+
+    public List<Sprite> getJumpBodyAni() {
+        return jumpBodyAni;
+    }
+
+    public List<Sprite> getJumpHeadAni() {
+        return jumpHeadAni;
+    }
+
+    public List<Sprite> getFallHeadAni() {
+        return fallHeadAni;
+    }
+
+    public List<Sprite> getFallBodyAni() {
+        return fallBodyAni;
+    }
+
+    public List<Sprite> getDexGunFowardAni() {
+        return dexGunFowardAni;
+    }
+
+    public List<Sprite> getDexGunDownAni() {
+        return dexGunDownAni;
+    }
+
+    public List<Sprite> getDexGunUpAni() {
+        return dexGunUpAni;
+    }
+
+    public static int GET_CANVAS_WIDTH() {
+        return CANVAS_WIDTH;
+    }
+
+    public static int GET_CANVAS_HEIGHT() {
+        return CANVAS_HEIGHT;
+    }
+
+    public static int GET_OFFSET_X() {
+        return OFFSET_X;
+    }
+
+    public static int GET_OFFSET_Y() {
+        return OFFSET_Y;
+    }
+
+    public static int GET_RENDER_WIDTH() {
+        return RENDER_WIDTH;
+    }
+
+    public static int GET_RENDER_HEIGHT() {
+        return RENDER_HEIGHT;
     }
 
 }

@@ -14,7 +14,6 @@ public class Movable extends GameObject {
     protected boolean accelerating;
     protected double weight;
 
-
     public Movable(int posX, int posY, int width, int height, double weight) {
         this.xPos = posX;
         this.yPos = posY;
@@ -23,8 +22,6 @@ public class Movable extends GameObject {
         this.weight = weight;
         this.xVelocity = 0;
         this.yVelocity = 0;
-        this.elapsedTime = 0;
-        this.autoUpdateAni = true;
     }
 
     // Método para atualizar a posição do objeto com base na física
