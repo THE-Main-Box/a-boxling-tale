@@ -33,6 +33,12 @@ public class Player extends Movable {
 
     private List<Sprite> idleBodyAni = new ArrayList<>();
     private List<Sprite> idleHeadAni = new ArrayList<>();
+
+    private List<Sprite> idleHeadEyesClosed = new ArrayList<>();
+
+    private List<Sprite> UpLookHeadClosed = new ArrayList<>();
+    private List<Sprite> downLookHeadClosed = new ArrayList<>();
+
     private List<Sprite> damageHeadAni = new ArrayList<>();
     private List<Sprite> damageBodyAni = new ArrayList<>();
     private List<Sprite> runBodyAni = new ArrayList<>();
@@ -87,8 +93,8 @@ public class Player extends Movable {
 
     // Método para inicializar as animações de queda
     private void initializeFallAnimation() {
-        fallHeadAni.add(new Sprite(2, 3));
-        fallHeadAni.add(new Sprite(3, 3));
+        fallHeadAni.add(new Sprite(1, 2));
+        fallHeadAni.add(new Sprite(2, 2));
 
         fallBodyAni.add(new Sprite(2, 3));
         fallBodyAni.add(new Sprite(3, 3));
@@ -102,8 +108,8 @@ public class Player extends Movable {
         jumpBodyAni.add(new Sprite(0, 3));
         jumpBodyAni.add(new Sprite(1, 3));
 
-        jumpHeadAni.add(new Sprite(0, 3));
-        jumpHeadAni.add(new Sprite(1, 3));
+        jumpHeadAni.add(new Sprite(3, 1));
+        jumpHeadAni.add(new Sprite(0, 2));
 
         bodyAniPlayer.addAnimation("jump", jumpBodyAni);
         headAniPlayer.addAnimation("jump", jumpHeadAni);
@@ -112,10 +118,8 @@ public class Player extends Movable {
     // Método para inicializar as animações de dano
     private void initializeDamageAnimation() {
         damageHeadAni.add(new Sprite(0, 4, 300));
-        damageHeadAni.add(new Sprite(3, 0, 200));
 
-        damageBodyAni.add(new Sprite(0, 4, 300));
-        damageBodyAni.add(new Sprite(3, 0, 200));
+        damageBodyAni.add(new Sprite(3, 2, 300));
 
         bodyAniPlayer.addAnimation("dmg", damageBodyAni);
         headAniPlayer.addAnimation("dmg", damageHeadAni);
@@ -145,15 +149,15 @@ public class Player extends Movable {
         runBodyAni.add(new Sprite(2, 2, 200));
         runBodyAni.add(new Sprite(3, 2, 20));
 
+        runHeadAni.add(new Sprite(2, 1, 200));
+        runHeadAni.add(new Sprite(1, 1, 20));
         runHeadAni.add(new Sprite(0, 1, 200));
         runHeadAni.add(new Sprite(1, 1, 20));
-        runHeadAni.add(new Sprite(2, 1, 200));
-        runHeadAni.add(new Sprite(3, 1, 20));
 
-        runHeadAni.add(new Sprite(0, 2, 200));
-        runHeadAni.add(new Sprite(1, 2, 20));
-        runHeadAni.add(new Sprite(2, 2, 200));
-        runHeadAni.add(new Sprite(3, 2, 20));
+        runHeadAni.add(new Sprite(2, 1, 200));
+        runHeadAni.add(new Sprite(1, 1, 20));
+        runHeadAni.add(new Sprite(0, 1, 200));
+        runHeadAni.add(new Sprite(1, 1, 20));
 
 
         bodyAniPlayer.addAnimation("run", runBodyAni);
@@ -275,6 +279,19 @@ public class Player extends Movable {
 
     public void setHeadSpriteSheet(BufferedImage headSpriteSheet) {
         this.headSpriteSheet = headSpriteSheet;
+    }
+
+
+    public List<Sprite> getIdleHeadEyesClosed() {
+        return idleHeadEyesClosed;
+    }
+
+    public List<Sprite> getUpLookHeadClosed() {
+        return UpLookHeadClosed;
+    }
+
+    public List<Sprite> getDownLookHeadClosed() {
+        return downLookHeadClosed;
     }
 
     public List<Sprite> getIdleBodyAni() {
