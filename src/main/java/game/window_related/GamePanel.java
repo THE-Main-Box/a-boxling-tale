@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 public class GamePanel extends JPanel {
 
-    private Player player = new Player(0, 0, 52, 60, 5);
+    private Player player = new Player(100, 100, 52, 60, 5);
     private PlayerController playerController;
     private GameObjectRenderer renderer = new GameObjectRenderer();
 
