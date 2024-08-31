@@ -31,22 +31,27 @@ public class Player extends Movable {
     private ObjectAnimationPlayer bodyAniPlayer = new ObjectAnimationPlayer();
     private ObjectAnimationPlayer headAniPlayer = new ObjectAnimationPlayer();
 
+
     private List<Sprite> idleBodyAni = new ArrayList<>();
     private List<Sprite> idleHeadAni = new ArrayList<>();
 
     private List<Sprite> idleHeadEyesClosed = new ArrayList<>();
 
-    private List<Sprite> UpLookHeadClosed = new ArrayList<>();
-    private List<Sprite> downLookHeadClosed = new ArrayList<>();
+    private List<Sprite> upLookHeadAni = new ArrayList<>();
+    private List<Sprite> downLookHeadAni = new ArrayList<>();
 
     private List<Sprite> damageHeadAni = new ArrayList<>();
     private List<Sprite> damageBodyAni = new ArrayList<>();
+
     private List<Sprite> runBodyAni = new ArrayList<>();
     private List<Sprite> runHeadAni = new ArrayList<>();
+
     private List<Sprite> jumpBodyAni = new ArrayList<>();
     private List<Sprite> jumpHeadAni = new ArrayList<>();
-    private List<Sprite> fallHeadAni = new ArrayList<>();
+
     private List<Sprite> fallBodyAni = new ArrayList<>();
+    private List<Sprite> fallHeadAni = new ArrayList<>();
+
     private List<Sprite> dexGunUpAni = new ArrayList<>();
     private List<Sprite> dexGunDownAni = new ArrayList<>();
     private List<Sprite> dexGunFowardAni = new ArrayList<>();
@@ -62,29 +67,46 @@ public class Player extends Movable {
         // Inicialização das animações
         initializeDexGunAnimations();
         initializeIdleAnimation();
+        initializeHeadFaceDownAnimation();
+        initializeHeadFaceUpAnimation();
         initializeRunAnimation();
         initializeJumpAnimation();
         initializeFallAnimation();
         initializeDamageAnimation();
 
-        setCurrentBodyAnimation("idle");
-        setCurrentHeadAnimation("idle");
+        bodyAniPlayer.setAnimation("idle");
+        headAniPlayer.setAnimation("idle");
 
+    }
+
+    private void initializeHeadFaceUpAnimation() {
+        upLookHeadAni.add(new Sprite(0, 3, 1000));
+
+        headAniPlayer.addAnimation("look-up", upLookHeadAni);
+    }
+
+    private void initializeHeadFaceDownAnimation() {
+        downLookHeadAni.add(new Sprite(1, 3, 1000));
+
+        headAniPlayer.addAnimation("look-down", downLookHeadAni);
     }
 
     // Método para inicializar as animações da arma de Dex
     private void initializeDexGunAnimations() {
         dexGunFowardAni.add(new Sprite(0, 0, 20));
         dexGunFowardAni.add(new Sprite(1, 0, 20));
-        dexGunFowardAni.add(new Sprite(2, 0, 20));
+        dexGunFowardAni.add(new Sprite(2, 0, 200));
+        dexGunFowardAni.add(new Sprite(1, 0, 20));
 
         dexGunUpAni.add(new Sprite(3, 0, 20));
         dexGunUpAni.add(new Sprite(4, 0, 20));
-        dexGunUpAni.add(new Sprite(5, 0, 20));
+        dexGunUpAni.add(new Sprite(5, 0, 200));
+        dexGunUpAni.add(new Sprite(4, 0, 20));
 
         dexGunDownAni.add(new Sprite(6, 0, 20));
         dexGunDownAni.add(new Sprite(7, 0, 20));
-        dexGunDownAni.add(new Sprite(8, 0, 20));
+        dexGunDownAni.add(new Sprite(8, 0, 200));
+        dexGunDownAni.add(new Sprite(7, 0, 20));
 
         weaponAniPlayer.addAnimation("gun-fwd", dexGunFowardAni);
         weaponAniPlayer.addAnimation("gun-uwd", dexGunUpAni);
@@ -164,8 +186,6 @@ public class Player extends Movable {
         headAniPlayer.addAnimation("run", runHeadAni);
     }
 
-    // Método para atualizar a animação de ataque
-
     // Método para atualizar as animações automaticamente
     public void updateAnimation(float deltaTime) {
         bodyAniPlayer.update(deltaTime);
@@ -173,52 +193,28 @@ public class Player extends Movable {
         weaponAniPlayer.update(deltaTime);
     }
 
-    public void setAutoUpdateBodyAnimation(boolean autoUpdate){
+    public void setAutoUpdateBodyAnimation(boolean autoUpdate) {
         bodyAniPlayer.setAutoUpdateAni(autoUpdate);
     }
 
-    public void setAutoUpdateHeadAnimation(boolean autoUpdate){
+    public void setAutoUpdateHeadAnimation(boolean autoUpdate) {
         headAniPlayer.setAutoUpdateAni(autoUpdate);
     }
 
-    public void setAutoUpdateWeaponAnimation(boolean autoUpdate){
+    public void setAutoUpdateWeaponAnimation(boolean autoUpdate) {
         weaponAniPlayer.setAutoUpdateAni(autoUpdate);
     }
 
-    public void setCurrentHeadAnimation(String animationTitle){
-        headAniPlayer.setAnimation(animationTitle);
+    public ObjectAnimationPlayer getWeaponAniPlayer() {
+        return weaponAniPlayer;
     }
 
-    public void setCurrentBodyAnimation(String animationTitle){
-        bodyAniPlayer.setAnimation(animationTitle);
+    public ObjectAnimationPlayer getBodyAniPlayer() {
+        return bodyAniPlayer;
     }
 
-    public void setCurrentWeaponAnimation(String animationTitle){
-        weaponAniPlayer.setAnimation(animationTitle);
-    }
-
-    public void setCurrentBodySprite(String animationKey, int index){
-        bodyAniPlayer.setCurrentSprite(animationKey, index);
-    }
-
-    public void setCurrentHeadSprite(String animationKey, int index){
-        headAniPlayer.setCurrentSprite(animationKey, index);
-    }
-
-    public void setCurrentWeaponSprite(String animationKey, int index){
-        weaponAniPlayer.setCurrentSprite(animationKey, index);
-    }
-
-    public Sprite getCurrentBodySprite(){
-        return bodyAniPlayer.getCurrentSprite();
-    }
-
-    public Sprite getCurrentHeadSprite(){
-        return headAniPlayer.getCurrentSprite();
-    }
-
-    public Sprite getCurrentWeaponSprite(){
-        return weaponAniPlayer.getCurrentSprite();
+    public ObjectAnimationPlayer getHeadAniPlayer() {
+        return headAniPlayer;
     }
 
     public BufferedImage getDexGunSprite() {
@@ -236,6 +232,7 @@ public class Player extends Movable {
     public boolean isShowingWeapon() {
         return showingWeapon;
     }
+
 
     public void setShowingWeapon(boolean showingWeapon) {
         this.showingWeapon = showingWeapon;
@@ -257,18 +254,6 @@ public class Player extends Movable {
         this.usingWeapon = usingWeapon;
     }
 
-    public List<Sprite> getCurrentHeadAnimation() {
-        return headAniPlayer.getCurrentAnimation();
-    }
-
-    public List<Sprite> getCurrentBodyAnimation() {
-        return bodyAniPlayer.getCurrentAnimation();
-    }
-
-    public List<Sprite> getCurrentWeaponAnimation() {
-        return weaponAniPlayer.getCurrentAnimation();
-    }
-
     public void setDexGunSprite(BufferedImage dexGunSprite) {
         this.dexGunSprite = dexGunSprite;
     }
@@ -286,12 +271,12 @@ public class Player extends Movable {
         return idleHeadEyesClosed;
     }
 
-    public List<Sprite> getUpLookHeadClosed() {
-        return UpLookHeadClosed;
+    public List<Sprite> getUpLookHeadAni() {
+        return upLookHeadAni;
     }
 
-    public List<Sprite> getDownLookHeadClosed() {
-        return downLookHeadClosed;
+    public List<Sprite> getDownLookHeadAni() {
+        return downLookHeadAni;
     }
 
     public List<Sprite> getIdleBodyAni() {

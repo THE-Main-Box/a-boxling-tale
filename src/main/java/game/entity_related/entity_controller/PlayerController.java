@@ -23,8 +23,8 @@ public class PlayerController {
 
         player.setxAcceleration(walkAcceleration);
 
-        player.setCurrentBodyAnimation("run");
-        player.setCurrentHeadAnimation("run");
+        player.getHeadAniPlayer().setAnimation("run");
+        player.getBodyAniPlayer().setAnimation("run");
     }
 
 
@@ -39,8 +39,8 @@ public class PlayerController {
 
         player.setxAcceleration(-walkAcceleration);
 
-        player.setCurrentBodyAnimation("run");
-        player.setCurrentHeadAnimation("run");
+        player.getHeadAniPlayer().setAnimation("run");
+        player.getBodyAniPlayer().setAnimation("run");
     }
 
     //mover para cima
@@ -53,8 +53,9 @@ public class PlayerController {
 
         player.setyAcceleration(-walkAcceleration);
 
-        player.setCurrentHeadSprite("jump", 1);
-        player.setCurrentBodySprite("jump", 1);
+
+        player.getHeadAniPlayer().setCurrentSprite("jump", 1);
+        player.getBodyAniPlayer().setCurrentSprite("jump", 1);
     }
 
     //mover para baixo
@@ -66,8 +67,8 @@ public class PlayerController {
 
         player.setyAcceleration(walkAcceleration);
 
-        player.setCurrentBodySprite("fall", 1);
-        player.setCurrentHeadSprite("fall", 1);
+        player.getHeadAniPlayer().setCurrentSprite("fall", 1);
+        player.getBodyAniPlayer().setCurrentSprite("fall", 1);
 
     }
 
@@ -75,8 +76,8 @@ public class PlayerController {
     public void stopMoving() {
         player.setAccelerating(false);
 
-        player.setCurrentHeadAnimation("idle");
-        player.setCurrentBodyAnimation("idle");
+        player.getBodyAniPlayer().setAnimation("idle");
+        player.getHeadAniPlayer().setAnimation("idle");
     }
 
 
@@ -88,11 +89,14 @@ public class PlayerController {
 
         }
 
+        player.setAutoUpdateHeadAnimation(false);
+        player.setAutoUpdateWeaponAnimation(true);
         player.setShowingWeapon(true);
         player.setAttacking(true);
         player.setUsingWeapon(true);
 
-        player.setCurrentWeaponAnimation("gun-fwd");
+        player.getWeaponAniPlayer().setAnimation("gun-fwd");
+        player.getHeadAniPlayer().setCurrentSprite ("idle", 0);
     }
 
     public void shootDownward(){
@@ -103,11 +107,15 @@ public class PlayerController {
 
         }
 
+        player.setAutoUpdateHeadAnimation(false);
+        player.setAutoUpdateWeaponAnimation(true);
         player.setShowingWeapon(true);
         player.setAttacking(true);
         player.setUsingWeapon(true);
 
-        player.setCurrentWeaponAnimation("gun-dwd");
+
+        player.getWeaponAniPlayer().setAnimation("gun-dwd");
+        player.getHeadAniPlayer().setCurrentSprite ("look-down", 0);
 
     }
 
@@ -119,11 +127,16 @@ public class PlayerController {
 
         }
 
+        player.setAutoUpdateHeadAnimation(false);
+        player.setAutoUpdateWeaponAnimation(true);
         player.setShowingWeapon(true);
         player.setAttacking(true);
         player.setUsingWeapon(true);
 
-        player.setCurrentWeaponAnimation("gun-uwd");
+
+
+        player.getWeaponAniPlayer().setAnimation("gun-uwd");
+        player.getHeadAniPlayer().setCurrentSprite ("look-up", 0);
 
     }
 

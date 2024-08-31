@@ -127,8 +127,8 @@ public class GamePanel extends JPanel {
         renderer.renderPlayer(
                 g,
                 player.getSpriteByIndex(
-                        player.getCurrentBodySprite().getIndexX(),
-                        player.getCurrentBodySprite().getIndexY(),
+                        player.getBodyAniPlayer().getCurrentSprite().getIndexX(),
+                        player.getBodyAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
                         player.getBodySpriteSheet()
@@ -145,8 +145,8 @@ public class GamePanel extends JPanel {
         renderer.renderPlayer(
                 g,
                 player.getSpriteByIndex(
-                        player.getCurrentHeadSprite().getIndexX(),
-                        player.getCurrentHeadSprite().getIndexY(),
+                        player.getHeadAniPlayer().getCurrentSprite().getIndexX(),
+                        player.getHeadAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
                         player.getHeadSpriteSheet()
@@ -163,8 +163,8 @@ public class GamePanel extends JPanel {
         renderer.renderPlayer(
                 g,
                 player.getSpriteByIndex(
-                        player.getCurrentWeaponSprite().getIndexX(),
-                        player.getCurrentWeaponSprite().getIndexY(),
+                        player.getWeaponAniPlayer().getCurrentSprite().getIndexX(),
+                        player.getWeaponAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
                         player.getDexGunSprite()
@@ -177,6 +177,12 @@ public class GamePanel extends JPanel {
         );
     }
 
+    private boolean canStopAttackAnimation() {
+        return player.getWeaponAniPlayer().getCurrentAnimation() != null
+                && player.isAttacking()
+                && player.getWeaponAniPlayer().getCurrentSprite().equals(player.getWeaponAniPlayer().getCurrentAnimation().getLast());
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -186,7 +192,16 @@ public class GamePanel extends JPanel {
         renderPLayerBody(g);
         renderPLayerHead(g);
 
-        if (player.isShowingWeapon() && player.getCurrentWeaponAnimation() != null) {
+        if (this.canStopAttackAnimation()) {
+            player.setAttacking(false);
+            player.setAutoUpdateWeaponAnimation(false);
+
+            player.setAutoUpdateHeadAnimation(true);
+
+            player.getWeaponAniPlayer().setCurrentAnimation(player.getWeaponAniPlayer().getCurrentAnimation());
+        }
+
+        if (player.isShowingWeapon() && player.getWeaponAniPlayer().getCurrentAnimation() != null) {
             renderPLayerWeapon(g);
         }
 

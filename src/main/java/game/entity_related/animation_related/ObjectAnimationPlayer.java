@@ -84,6 +84,18 @@ public class ObjectAnimationPlayer {
         }
     }
 
+    public int getAniTick() {
+        return aniTick;
+    }
+
+    public float getFrameDuration() {
+        return frameDuration;
+    }
+
+    public void setFrameDuration(float frameDuration) {
+        this.frameDuration = frameDuration;
+    }
+
     public Sprite getCurrentSprite() {
         return currentAnimation.get(aniTick);
     }
