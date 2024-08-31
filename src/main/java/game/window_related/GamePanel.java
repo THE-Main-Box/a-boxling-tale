@@ -101,9 +101,8 @@ public class GamePanel extends JPanel {
     }
 
     public void updateGame(float deltaTime) {
-        player.updateAnimation(deltaTime);          // Atualiza a animação do jogador com deltaTime
         player.updatePosition(deltaTime);           // Atualiza a posição do jogador
-
+        player.updateAnimation(deltaTime);          // Atualiza a animação do jogador com deltaTime
 
     }
 
@@ -199,6 +198,9 @@ public class GamePanel extends JPanel {
             player.setAutoUpdateHeadAnimation(true);
 
             player.getWeaponAniPlayer().setCurrentAnimation(player.getWeaponAniPlayer().getCurrentAnimation());
+
+            player.getHeadAniPlayer().setAnimation(player.getBodyAniPlayer().getCurrentAnimationKey());
+
         }
 
         if (player.isShowingWeapon() && player.getWeaponAniPlayer().getCurrentAnimation() != null) {

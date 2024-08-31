@@ -35,7 +35,7 @@ public class Player extends Movable {
     private List<Sprite> idleBodyAni = new ArrayList<>();
     private List<Sprite> idleHeadAni = new ArrayList<>();
 
-    private List<Sprite> idleHeadEyesClosed = new ArrayList<>();
+    private List<Sprite> idleHeadEyesClosedAni = new ArrayList<>();
 
     private List<Sprite> upLookHeadAni = new ArrayList<>();
     private List<Sprite> downLookHeadAni = new ArrayList<>();
@@ -67,6 +67,7 @@ public class Player extends Movable {
         // Inicialização das animações
         initializeDexGunAnimations();
         initializeIdleAnimation();
+        initializeHeadEyesClosedAnimation();
         initializeHeadFaceDownAnimation();
         initializeHeadFaceUpAnimation();
         initializeRunAnimation();
@@ -77,6 +78,13 @@ public class Player extends Movable {
         bodyAniPlayer.setAnimation("idle");
         headAniPlayer.setAnimation("idle");
 
+    }
+
+    public void initializeHeadEyesClosedAnimation() {
+        idleHeadEyesClosedAni.add(new Sprite(2, 0, 1000));
+        idleHeadEyesClosedAni.add(new Sprite(3, 0, 1000));
+
+        headAniPlayer.addAnimation("idle-closed_e", idleHeadEyesClosedAni);
     }
 
     private void initializeHeadFaceUpAnimation() {
@@ -93,20 +101,20 @@ public class Player extends Movable {
 
     // Método para inicializar as animações da arma de Dex
     private void initializeDexGunAnimations() {
-        dexGunFowardAni.add(new Sprite(0, 0, 20));
-        dexGunFowardAni.add(new Sprite(1, 0, 20));
-        dexGunFowardAni.add(new Sprite(2, 0, 200));
-        dexGunFowardAni.add(new Sprite(1, 0, 20));
+        dexGunFowardAni.add(new Sprite(0, 0, 100));
+        dexGunFowardAni.add(new Sprite(1, 0, 80));
+        dexGunFowardAni.add(new Sprite(2, 0, 100));
+        dexGunFowardAni.add(new Sprite(1, 0, 80));
 
-        dexGunUpAni.add(new Sprite(3, 0, 20));
-        dexGunUpAni.add(new Sprite(4, 0, 20));
-        dexGunUpAni.add(new Sprite(5, 0, 200));
-        dexGunUpAni.add(new Sprite(4, 0, 20));
+        dexGunUpAni.add(new Sprite(3, 0, 100));
+        dexGunUpAni.add(new Sprite(4, 0, 80));
+        dexGunUpAni.add(new Sprite(5, 0, 100));
+        dexGunUpAni.add(new Sprite(4, 0, 80));
 
-        dexGunDownAni.add(new Sprite(6, 0, 20));
-        dexGunDownAni.add(new Sprite(7, 0, 20));
-        dexGunDownAni.add(new Sprite(8, 0, 200));
-        dexGunDownAni.add(new Sprite(7, 0, 20));
+        dexGunDownAni.add(new Sprite(6, 0, 100));
+        dexGunDownAni.add(new Sprite(7, 0, 80));
+        dexGunDownAni.add(new Sprite(8, 0, 100));
+        dexGunDownAni.add(new Sprite(7, 0, 80));
 
         weaponAniPlayer.addAnimation("gun-fwd", dexGunFowardAni);
         weaponAniPlayer.addAnimation("gun-uwd", dexGunUpAni);
@@ -139,9 +147,9 @@ public class Player extends Movable {
 
     // Método para inicializar as animações de dano
     private void initializeDamageAnimation() {
-        damageHeadAni.add(new Sprite(0, 4, 300));
+        damageHeadAni.add(new Sprite(3, 2, 300));
 
-        damageBodyAni.add(new Sprite(3, 2, 300));
+        damageBodyAni.add(new Sprite(0, 4, 300));
 
         bodyAniPlayer.addAnimation("dmg", damageBodyAni);
         headAniPlayer.addAnimation("dmg", damageHeadAni);
@@ -266,10 +274,6 @@ public class Player extends Movable {
         this.headSpriteSheet = headSpriteSheet;
     }
 
-
-    public List<Sprite> getIdleHeadEyesClosed() {
-        return idleHeadEyesClosed;
-    }
 
     public List<Sprite> getUpLookHeadAni() {
         return upLookHeadAni;

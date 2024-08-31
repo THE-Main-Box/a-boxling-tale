@@ -51,7 +51,7 @@ public class PlayerController {
 
         player.setAccelerating(true);
 
-//        player.setyAcceleration(-walkAcceleration);
+        player.setyAcceleration(-walkAcceleration);
 
 
         player.getHeadAniPlayer().setCurrentSprite("jump", 1);
@@ -65,7 +65,7 @@ public class PlayerController {
 
         player.setAccelerating(true);
 
-//        player.setyAcceleration(walkAcceleration);
+        player.setyAcceleration(walkAcceleration);
 
         player.getHeadAniPlayer().setCurrentSprite("fall", 1);
         player.getBodyAniPlayer().setCurrentSprite("fall", 1);
