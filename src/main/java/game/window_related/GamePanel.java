@@ -110,13 +110,13 @@ public class GamePanel extends JPanel {
         /* verifica se o jogador está virado para frente ou para tras
          * e altera os valores para manter os sprites centralizados*/
         if (player.isFacingForward()) {
-            spritePosX = player.getxPos() - player.GET_OFFSET_X();
-            spritePosY = player.getyPos() - player.GET_OFFSET_Y();
+            spritePosX = (int) (player.getxPos() - player.GET_OFFSET_X());
+            spritePosY = (int) (player.getyPos() - player.GET_OFFSET_Y());
             spriteRenderWidth = player.GET_RENDER_WIDTH();
             spriteRenderHeight = player.GET_RENDER_HEIGHT();
         } else {
-            spritePosX = player.getxPos() + player.GET_CANVAS_WIDTH() - player.GET_OFFSET_X() / 2 + player.getWidth();
-            spritePosY = player.getyPos() - player.GET_OFFSET_Y();
+            spritePosX = (int) (player.getxPos() + player.GET_CANVAS_WIDTH() - player.GET_OFFSET_X() / 2 + player.getWidth());
+            spritePosY = (int) (player.getyPos() - player.GET_OFFSET_Y());
             spriteRenderWidth = -player.GET_RENDER_WIDTH();
             spriteRenderHeight = player.GET_RENDER_HEIGHT();
         }
@@ -209,8 +209,8 @@ public class GamePanel extends JPanel {
 
 
         g.drawRect( // mostra as dimensões do jogador
-                player.getxPos(),
-                player.getyPos(),
+                (int) player.getxPos(),
+                (int) player.getyPos(),
                 player.getWidth(),
                 player.getHeight()
         );

@@ -5,21 +5,23 @@ import game.entity_related.animation_related.Sprite;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class GameObject {
+public abstract class GameObject {
     // Variáveis básicas para a posição e tamanho
-    protected int xPos, yPos, width, height;
+    protected float xPos, yPos;
+    protected int width, height;
 
     // Parâmetros relacionados à animação
     protected boolean facingForward; // Direção em que o personagem está virado
 
-    public GameObject(int xPos, int yPos, int width, int height) {
+    public GameObject(float xPos, float yPos, int width, int height) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.width = width;
         this.height = height;
     }
 
-    public GameObject() {}
+    public GameObject() {
+    }
 
     // Métodos para trabalhar com os sprites da folha de sprites
     public BufferedImage getSprite(int x, int y, int width, int height, BufferedImage spriteSheet) {
@@ -47,7 +49,7 @@ public class GameObject {
         this.facingForward = facingForward;
     }
 
-    public int getxPos() {
+    public float getxPos() {
         return xPos;
     }
 
@@ -55,7 +57,7 @@ public class GameObject {
         this.xPos = xPos;
     }
 
-    public int getyPos() {
+    public float getyPos() {
         return yPos;
     }
 

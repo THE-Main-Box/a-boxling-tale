@@ -6,7 +6,10 @@ public class PlayerController {
 
     private Player player;
 
-    private double walkAcceleration = 100.0;
+    private float walkAcceleration = 50f;
+    private float jumpAcceleration = 200f;
+
+//    jump burst looks like a good name for an ability
 
     public PlayerController(Player player) {
         this.player = player;
@@ -51,7 +54,7 @@ public class PlayerController {
 
         player.setAccelerating(true);
 
-        player.setyAcceleration(-walkAcceleration);
+        player.setyAcceleration(-jumpAcceleration);
 
 
         player.getHeadAniPlayer().setCurrentSprite("jump", 1);
@@ -65,7 +68,7 @@ public class PlayerController {
 
         player.setAccelerating(true);
 
-        player.setyAcceleration(walkAcceleration);
+        player.setyAcceleration(jumpAcceleration);
 
         player.getHeadAniPlayer().setCurrentSprite("fall", 1);
         player.getBodyAniPlayer().setCurrentSprite("fall", 1);

@@ -59,10 +59,10 @@ public class Player extends Movable {
     public Player(int posX, int posY, int width, int height, double weight) {
         super(posX, posY, width, height, weight);
 
-        setxMaxSpeed(300);
+        setxMaxSpeed(200);
         setyMaxSpeed(800);
         setAccelerating(false);
-        setDeceleration(0.7);
+        setDeceleration(0.8f);
 
         // Inicialização das animações
         initializeDexGunAnimations();

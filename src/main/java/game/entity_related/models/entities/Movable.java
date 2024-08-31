@@ -1,20 +1,20 @@
 package game.entity_related.models.entities;
 
-public class Movable extends GameObject {
+public abstract class Movable extends GameObject {
 
     // Velocidade e aceleração em ambos os eixos
-    protected double xVelocity, yVelocity;
-    protected double xAcceleration, yAcceleration;
+    protected float xVelocity, yVelocity;
+    protected float xAcceleration, yAcceleration;
 
     // Limites de velocidade
-    protected int xMaxSpeed, yMaxSpeed;
+    protected float xMaxSpeed, yMaxSpeed;
 
     // Parâmetros para controle de movimento e física
-    protected double deceleration;
+    protected float deceleration;
     protected boolean accelerating;
     protected double weight;
 
-    public Movable(int posX, int posY, int width, int height, double weight) {
+    public Movable(float posX, float posY, int width, int height, double weight) {
         this.xPos = posX;
         this.yPos = posY;
         this.width = width;
@@ -75,8 +75,8 @@ public class Movable extends GameObject {
 
         // Atualiza a posição com base na velocidade calculada
 
-            xPos += (int) (xVelocity * deltaTime);
-            yPos += (int) (yVelocity * deltaTime);
+            xPos += xVelocity * deltaTime;
+            yPos += yVelocity * deltaTime;
     }
 
     // Métodos de acesso para os parâmetros de aceleração e desaceleração
@@ -92,7 +92,7 @@ public class Movable extends GameObject {
         return deceleration;
     }
 
-    public void setDeceleration(double deceleration) {
+    public void setDeceleration(float deceleration) {
         this.deceleration = deceleration;
     }
 
@@ -100,7 +100,7 @@ public class Movable extends GameObject {
         return xAcceleration;
     }
 
-    public void setxAcceleration(double xAcceleration) {
+    public void setxAcceleration(float xAcceleration) {
         this.xAcceleration = xAcceleration;
     }
 
@@ -108,7 +108,7 @@ public class Movable extends GameObject {
         return yAcceleration;
     }
 
-    public void setyAcceleration(double yAcceleration) {
+    public void setyAcceleration(float yAcceleration) {
         this.yAcceleration = yAcceleration;
     }
 
@@ -126,7 +126,7 @@ public class Movable extends GameObject {
         return xVelocity;
     }
 
-    public void setxVelocity(double xVelocity) {
+    public void setxVelocity(float xVelocity) {
         this.xVelocity = xVelocity;
     }
 
@@ -134,12 +134,12 @@ public class Movable extends GameObject {
         return yVelocity;
     }
 
-    public void setyVelocity(double yVelocity) {
+    public void setyVelocity(float yVelocity) {
         this.yVelocity = yVelocity;
     }
 
 
-    public int getxMaxSpeed() {
+    public float getxMaxSpeed() {
         return xMaxSpeed;
     }
 
@@ -147,7 +147,7 @@ public class Movable extends GameObject {
         this.xMaxSpeed = xMaxSpeed;
     }
 
-    public int getyMaxSpeed() {
+    public float getyMaxSpeed() {
         return yMaxSpeed;
     }
 
