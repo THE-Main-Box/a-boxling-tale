@@ -1,22 +1,18 @@
 package game.window_related;
 
 import game.entity_related.animation_related.GameObjectRenderer;
-import game.entity_related.animation_related.Sprite;
 import game.entity_related.entity_controller.PlayerController;
 import game.entity_related.models.Movement;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
 import game.entity_related.models.entities.Player;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class GamePanel extends JPanel {
 
-    private Player player = new Player(100, 100, 52, 60, 5);
+    private Player player;
     private PlayerController playerController;
     private GameObjectRenderer renderer = new GameObjectRenderer();
 
@@ -28,9 +24,8 @@ public class GamePanel extends JPanel {
     private int spriteRenderWidth;
     private int spriteRenderHeight;
 
-    public GamePanel() {
-        importPlayerSpriteSheet();
-
+    public GamePanel(Player player) {
+        this.player = player;
         playerController = new PlayerController(player);
 
         keyInputs = new KeyboardInput(this);
@@ -101,8 +96,7 @@ public class GamePanel extends JPanel {
     }
 
     public void updateGame(float deltaTime) {
-        player.updatePosition(deltaTime);           // Atualiza a posição do jogador
-        player.updateAnimation(deltaTime);          // Atualiza a animação do jogador com deltaTime
+        player.update(deltaTime);          // Atualiza a animação do jogador com deltaTime
 
     }
 
@@ -166,7 +160,7 @@ public class GamePanel extends JPanel {
                         player.getWeaponAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
-                        player.getDexGunSprite()
+                        player.getDexGunSpriteSheet()
                 ),
                 spritePosX,
                 spritePosY,
@@ -214,27 +208,5 @@ public class GamePanel extends JPanel {
                 player.getWidth(),
                 player.getHeight()
         );
-    }
-
-    private void importPlayerSpriteSheet() { // importa e define a sprite sheet do jogador direto da pasta resources
-        try {
-            InputStream rockGround = getClass().getResourceAsStream("/sprites/rock-ground-tile-map.png");
-            InputStream dexBodySprites = getClass().getResourceAsStream("/sprites/dex-body-sprites.png");
-            InputStream dexHeadSprites = getClass().getResourceAsStream("/sprites/dex-head-sprites.png");
-            InputStream dexGunSprites = getClass().getResourceAsStream("/sprites/dex-gun.png");
-
-            assert rockGround != null;
-            assert dexHeadSprites != null;
-            assert dexBodySprites != null;
-
-
-            player.setBodySpriteSheet(ImageIO.read(dexBodySprites));
-            player.setHeadSpriteSheet(ImageIO.read(dexHeadSprites));
-
-            player.setDexGunSprite(ImageIO.read(dexGunSprites));
-
-        } catch (IOException e) {
-            throw new RuntimeException("Erro na importação da sprite sheet do jogador");
-        }
     }
 }

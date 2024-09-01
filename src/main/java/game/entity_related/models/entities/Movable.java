@@ -10,9 +10,13 @@ public abstract class Movable extends GameObject {
     protected float xMaxSpeed, yMaxSpeed;
 
     // Parâmetros para controle de movimento e física
-    protected float deceleration;
-    protected boolean accelerating;
+    protected float decelerationX;
+    protected float decelerationY;
+    protected boolean acceleratingX;
+    protected boolean acceleratingY;
     protected double weight;
+    protected double additionalWeight;
+    protected final double WEIGHT_DEF;
 
     public Movable(float posX, float posY, int width, int height, double weight) {
         this.xPos = posX;
@@ -20,6 +24,7 @@ public abstract class Movable extends GameObject {
         this.width = width;
         this.height = height;
         this.weight = weight;
+        this.WEIGHT_DEF = weight;
         this.xVelocity = 0;
         this.yVelocity = 0;
     }
@@ -27,7 +32,7 @@ public abstract class Movable extends GameObject {
     // Método para atualizar a posição do objeto com base na física
     public void updatePosition(float deltaTime) {
         // Atualiza a velocidade com base na aceleração
-        if (accelerating) {
+        if (acceleratingX) {
 
             if (xAcceleration != 0) {
 
@@ -41,59 +46,65 @@ public abstract class Movable extends GameObject {
                 }
 
             }
-
-            if (yAcceleration != 0) {
-
-                yVelocity += (yAcceleration / weight);
-
-                // Limita a velocidade máxima no eixo Y
-                if (Math.abs(yVelocity) > yMaxSpeed) {
-
-                    yVelocity = yMaxSpeed * Math.signum(yVelocity);
-
-                }
-
-            }
-
         } else {
 
             xAcceleration = 0;
-            yAcceleration = 0;
 
-            yVelocity *= deceleration;
-            xVelocity *= deceleration;
+            xVelocity *= decelerationX;
 
             if (Math.abs(xVelocity) < 0.01) {
                 xVelocity = 0;
             }
 
+        }
+
+        if (acceleratingY) {
+            yVelocity += (yAcceleration / weight);
+            // Limita a velocidade máxima no eixo Y
+            if (Math.abs(yVelocity) > yMaxSpeed) {
+                yVelocity = yMaxSpeed * Math.signum(yVelocity);
+            }
+        } else {
+            yVelocity *= decelerationX;
             if (Math.abs(yVelocity) < 0.01) {
                 yVelocity = 0;
             }
-
         }
+
 
         // Atualiza a posição com base na velocidade calculada
 
-            xPos += xVelocity * deltaTime;
-            yPos += yVelocity * deltaTime;
+        xPos += xVelocity * deltaTime;
+        yPos += yVelocity * deltaTime;
+    }
+
+    public void update(float deltaTime) {
+        updatePosition(deltaTime);
     }
 
     // Métodos de acesso para os parâmetros de aceleração e desaceleração
-    public boolean isAccelerating() {
-        return accelerating;
+    public boolean isAcceleratingX() {
+        return acceleratingX;
     }
 
-    public void setAccelerating(boolean accelerating) {
-        this.accelerating = accelerating;
+    public boolean isAcceleratingY() {
+        return acceleratingY;
     }
 
-    public double getDeceleration() {
-        return deceleration;
+    public void setAcceleratingY(boolean acceleratingY) {
+        this.acceleratingY = acceleratingY;
     }
 
-    public void setDeceleration(float deceleration) {
-        this.deceleration = deceleration;
+    public void setAcceleratingX(boolean acceleratingX) {
+        this.acceleratingX = acceleratingX;
+    }
+
+    public double getDecelerationX() {
+        return decelerationX;
+    }
+
+    public void setDecelerationX(float decelerationX) {
+        this.decelerationX = decelerationX;
     }
 
     public double getxAcceleration() {
@@ -153,5 +164,33 @@ public abstract class Movable extends GameObject {
 
     public void setyMaxSpeed(int yMaxSpeed) {
         this.yMaxSpeed = yMaxSpeed;
+    }
+
+    public double getWEIGHT_DEF() {
+        return WEIGHT_DEF;
+    }
+
+    public void setyMaxSpeed(float yMaxSpeed) {
+        this.yMaxSpeed = yMaxSpeed;
+    }
+
+    public void setxMaxSpeed(float xMaxSpeed) {
+        this.xMaxSpeed = xMaxSpeed;
+    }
+
+    public double getAdditionalWeight() {
+        return additionalWeight;
+    }
+
+    public void setAdditionalWeight(double additionalWeight) {
+        this.additionalWeight = additionalWeight;
+    }
+
+    public float getDecelerationY() {
+        return decelerationY;
+    }
+
+    public void setDecelerationY(float decelerationY) {
+        this.decelerationY = decelerationY;
     }
 }

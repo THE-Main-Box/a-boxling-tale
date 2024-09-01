@@ -3,7 +3,11 @@ package game.entity_related.models.entities;
 import game.entity_related.animation_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.Sprite;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +27,7 @@ public class Player extends Movable {
     private boolean usingWeapon = false;
 
     // Sprites e animações
-    private BufferedImage dexGunSprite;
+    private BufferedImage dexGunSpriteSheet;
     private BufferedImage bodySpriteSheet;
     private BufferedImage headSpriteSheet;
 
@@ -32,37 +36,40 @@ public class Player extends Movable {
     private ObjectAnimationPlayer headAniPlayer = new ObjectAnimationPlayer();
 
 
-    private List<Sprite> idleBodyAni = new ArrayList<>();
-    private List<Sprite> idleHeadAni = new ArrayList<>();
+    private final List<Sprite> idleBodyAni = new ArrayList<>();
+    private final List<Sprite> idleHeadAni = new ArrayList<>();
 
-    private List<Sprite> idleHeadEyesClosedAni = new ArrayList<>();
+    private final List<Sprite> idleHeadEyesClosedAni = new ArrayList<>();
 
-    private List<Sprite> upLookHeadAni = new ArrayList<>();
-    private List<Sprite> downLookHeadAni = new ArrayList<>();
+    private final List<Sprite> upLookHeadAni = new ArrayList<>();
+    private final List<Sprite> downLookHeadAni = new ArrayList<>();
 
-    private List<Sprite> damageHeadAni = new ArrayList<>();
-    private List<Sprite> damageBodyAni = new ArrayList<>();
+    private final List<Sprite> damageHeadAni = new ArrayList<>();
+    private final List<Sprite> damageBodyAni = new ArrayList<>();
 
-    private List<Sprite> runBodyAni = new ArrayList<>();
-    private List<Sprite> runHeadAni = new ArrayList<>();
+    private final List<Sprite> runBodyAni = new ArrayList<>();
+    private final List<Sprite> runHeadAni = new ArrayList<>();
 
-    private List<Sprite> jumpBodyAni = new ArrayList<>();
-    private List<Sprite> jumpHeadAni = new ArrayList<>();
+    private final List<Sprite> jumpBodyAni = new ArrayList<>();
+    private final List<Sprite> jumpHeadAni = new ArrayList<>();
 
-    private List<Sprite> fallBodyAni = new ArrayList<>();
-    private List<Sprite> fallHeadAni = new ArrayList<>();
+    private final List<Sprite> fallBodyAni = new ArrayList<>();
+    private final List<Sprite> fallHeadAni = new ArrayList<>();
 
-    private List<Sprite> dexGunUpAni = new ArrayList<>();
-    private List<Sprite> dexGunDownAni = new ArrayList<>();
-    private List<Sprite> dexGunFowardAni = new ArrayList<>();
+    private final List<Sprite> dexGunUpAni = new ArrayList<>();
+    private final List<Sprite> dexGunDownAni = new ArrayList<>();
+    private final List<Sprite> dexGunFowardAni = new ArrayList<>();
 
     public Player(int posX, int posY, int width, int height, double weight) {
         super(posX, posY, width, height, weight);
 
         setxMaxSpeed(200);
         setyMaxSpeed(800);
-        setAccelerating(false);
-        setDeceleration(0.8f);
+        setAcceleratingX(false);
+        setDecelerationX(0.8f);
+        setDecelerationY(0.8f);
+
+        loadPlayerSpriteSheet();
 
         // Inicialização das animações
         initializeDexGunAnimations();
@@ -78,6 +85,26 @@ public class Player extends Movable {
         bodyAniPlayer.setAnimation("idle");
         headAniPlayer.setAnimation("idle");
 
+    }
+
+    private void loadPlayerSpriteSheet(){
+        try {
+            InputStream dexBodySprites = getClass().getResourceAsStream("/sprites/dex-body-sprites.png");
+            InputStream dexHeadSprites = getClass().getResourceAsStream("/sprites/dex-head-sprites.png");
+            InputStream dexGunSprites = getClass().getResourceAsStream("/sprites/dex-gun.png");
+
+            assert dexHeadSprites != null;
+            assert dexBodySprites != null;
+
+
+            bodySpriteSheet = ImageIO.read(dexBodySprites);
+            headSpriteSheet = ImageIO.read(dexHeadSprites);
+
+            dexGunSpriteSheet = ImageIO.read(dexGunSprites);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro na importação da sprite sheet do jogador");
+        }
     }
 
     public void initializeHeadEyesClosedAnimation() {
@@ -194,11 +221,18 @@ public class Player extends Movable {
         headAniPlayer.addAnimation("run", runHeadAni);
     }
 
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        updateAnimation(deltaTime);
+    }
+
     // Método para atualizar as animações automaticamente
-    public void updateAnimation(float deltaTime) {
+    private void updateAnimation(float deltaTime) {
         bodyAniPlayer.update(deltaTime);
         headAniPlayer.update(deltaTime);
         weaponAniPlayer.update(deltaTime);
+
     }
 
     public void setAutoUpdateBodyAnimation(boolean autoUpdate) {
@@ -225,8 +259,8 @@ public class Player extends Movable {
         return headAniPlayer;
     }
 
-    public BufferedImage getDexGunSprite() {
-        return dexGunSprite;
+    public BufferedImage getDexGunSpriteSheet() {
+        return dexGunSpriteSheet;
     }
 
     public BufferedImage getBodySpriteSheet() {
@@ -262,8 +296,8 @@ public class Player extends Movable {
         this.usingWeapon = usingWeapon;
     }
 
-    public void setDexGunSprite(BufferedImage dexGunSprite) {
-        this.dexGunSprite = dexGunSprite;
+    public void setDexGunSpriteSheet(BufferedImage dexGunSpriteSheet) {
+        this.dexGunSpriteSheet = dexGunSpriteSheet;
     }
 
     public void setBodySpriteSheet(BufferedImage bodySpriteSheet) {

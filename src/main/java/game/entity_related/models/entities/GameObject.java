@@ -33,13 +33,6 @@ public abstract class GameObject {
         return spriteSheet.getSubimage(indexX * canvasWidth, indexY * canvasHeight, canvasWidth, canvasHeight);
     }
 
-
-    // Método para atualizar a animação automaticamente
-    public void updateAnimation(float deltaTime) {
-
-
-    }
-
     // Define a direção do personagem
     public boolean isFacingForward() {
         return facingForward;

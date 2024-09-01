@@ -1,5 +1,6 @@
 package game;
 
+import game.entity_related.models.entities.Player;
 import game.window_related.GamePanel;
 import game.window_related.GameWindow;
 
@@ -12,8 +13,13 @@ public class Game implements Runnable {
 
     private Thread gameThread;
 
+    private Player player;
+
+    // dimensões padroes do player w=52 h=60
+
     public Game() {
-        this.gamePanel = new GamePanel();
+        player = new Player(100,100, 52,60, 5);
+        this.gamePanel = new GamePanel(player);
         this.gameWindow = new GameWindow(gamePanel);
 
         this.gamePanel.requestFocus();

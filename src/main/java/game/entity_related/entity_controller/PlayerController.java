@@ -7,7 +7,7 @@ public class PlayerController {
     private Player player;
 
     private float walkAcceleration = 50f;
-    private float jumpAcceleration = 200f;
+    private float jumpAcceleration = 800f;
 
 //    jump burst looks like a good name for an ability
 
@@ -22,7 +22,7 @@ public class PlayerController {
         player.setAutoUpdateHeadAnimation(true);
 
         player.setFacingForward(true);
-        player.setAccelerating(true);
+        player.setAcceleratingX(true);
 
         player.setxAcceleration(walkAcceleration);
 
@@ -38,7 +38,7 @@ public class PlayerController {
         player.setAutoUpdateHeadAnimation(true);
 
         player.setFacingForward(false);
-        player.setAccelerating(true);
+        player.setAcceleratingX(true);
 
         player.setxAcceleration(-walkAcceleration);
 
@@ -52,8 +52,9 @@ public class PlayerController {
         player.setAutoUpdateBodyAnimation(false);
         player.setAutoUpdateHeadAnimation(false);
 
-        player.setAccelerating(true);
+        player.setAcceleratingY(true);
 
+//        player.setApplyGravity(true);
         player.setyAcceleration(-jumpAcceleration);
 
 
@@ -66,7 +67,7 @@ public class PlayerController {
         player.setAutoUpdateBodyAnimation(false);
         player.setAutoUpdateHeadAnimation(false);
 
-        player.setAccelerating(true);
+        player.setAcceleratingY(true);
 
         player.setyAcceleration(jumpAcceleration);
 
@@ -77,7 +78,10 @@ public class PlayerController {
 
     //parar de se mover
     public void stopMoving() {
-        player.setAccelerating(false);
+        player.setAcceleratingX(false);
+        player.setAcceleratingY(false);
+
+//        player.setApplyGravity(false);
 
         player.getBodyAniPlayer().setAnimation("idle");
         player.getHeadAniPlayer().setAnimation("idle");
