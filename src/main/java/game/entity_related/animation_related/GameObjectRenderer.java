@@ -6,9 +6,9 @@ import java.awt.image.ImageObserver;
 
 public class GameObjectRenderer {
 
-    public void renderPlayer(Graphics g, BufferedImage playerSprite, int x, int y, int renderWidth, int renderHeight, ImageObserver observer){
+    public void render(Graphics g, BufferedImage spriteToRender, int x, int y, int renderWidth, int renderHeight, ImageObserver observer){
         g.drawImage(
-                playerSprite,
+                spriteToRender,
                 x,
                 y,
                 renderWidth,

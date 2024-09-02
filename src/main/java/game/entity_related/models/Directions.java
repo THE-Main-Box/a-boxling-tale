@@ -1,10 +1,9 @@
 package game.entity_related.models;
 
-public enum Movement {
+public enum Directions {
     UP,
     DOWN,
     LEFT,
     RIGHT,
-    STOP,
-    JUMP
+    STEADY
 }

@@ -1,6 +1,6 @@
 package game.input_related;
 
-import game.entity_related.models.Movement;
+import game.entity_related.models.Directions;
 import game.window_related.GamePanel;
 
 import java.awt.event.KeyEvent;
@@ -25,16 +25,16 @@ public class KeyboardInput implements KeyListener {
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
-                gamePanel.movePlayer(Movement.UP);
+                gamePanel.movePlayer(Directions.UP);
                 break;
             case KeyEvent.VK_A:
-                gamePanel.movePlayer(Movement.LEFT);
+                gamePanel.movePlayer(Directions.LEFT);
                 break;
             case KeyEvent.VK_S:
-                gamePanel.movePlayer(Movement.DOWN);
+                gamePanel.movePlayer(Directions.DOWN);
                 break;
             case KeyEvent.VK_D:
-                gamePanel.movePlayer(Movement.RIGHT);
+                gamePanel.movePlayer(Directions.RIGHT);
                 break;
             case KeyEvent.VK_SPACE:
                 break;
@@ -50,7 +50,7 @@ public class KeyboardInput implements KeyListener {
                  KeyEvent.VK_A,
                  KeyEvent.VK_S,
                  KeyEvent.VK_D:
-                gamePanel.movePlayer(Movement.STOP);
+                gamePanel.movePlayer(Directions.STEADY);
                 break;
             case KeyEvent.VK_SPACE:
                 break;
