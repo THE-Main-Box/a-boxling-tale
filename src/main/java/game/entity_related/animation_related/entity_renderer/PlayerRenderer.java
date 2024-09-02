@@ -1,6 +1,5 @@
 package game.entity_related.animation_related.entity_renderer;
 
-import game.entity_related.animation_related.GameObjectRenderer;
 import game.entity_related.models.entities.Player;
 
 import java.awt.*;
@@ -104,7 +103,7 @@ public class PlayerRenderer {
 
         this.showColision(g);
 
-        if(this.player.isShowingWeapon()) {
+        if(this.player.isUsingWeapon()) {
             this.renderPLayerWeapon(g);
         }
 

@@ -31,9 +31,8 @@ public class PlayerAttack {
         player.setFacingForward(false);
         player.setAutoUpdateHeadAnimation(false);
         player.setAutoUpdateWeaponAnimation(true);
-        player.setShowingWeapon(true);
-        player.setAttacking(true);
         player.setUsingWeapon(true);
+        player.setAttacking(true);
 
         player.getWeaponAniPlayer().setAnimation("gun-fwd");
         player.getHeadAniPlayer().setCurrentSprite("idle", 0);
@@ -43,9 +42,8 @@ public class PlayerAttack {
         player.setFacingForward(true);
         player.setAutoUpdateHeadAnimation(false);
         player.setAutoUpdateWeaponAnimation(true);
-        player.setShowingWeapon(true);
-        player.setAttacking(true);
         player.setUsingWeapon(true);
+        player.setAttacking(true);
 
         player.getWeaponAniPlayer().setAnimation("gun-fwd");
         player.getHeadAniPlayer().setCurrentSprite("idle", 0);
@@ -54,9 +52,8 @@ public class PlayerAttack {
     private void animateShootDown(){
         player.setAutoUpdateHeadAnimation(false);
         player.setAutoUpdateWeaponAnimation(true);
-        player.setShowingWeapon(true);
-        player.setAttacking(true);
         player.setUsingWeapon(true);
+        player.setAttacking(true);
 
 
         player.getWeaponAniPlayer().setAnimation("gun-dwd");
@@ -66,9 +63,8 @@ public class PlayerAttack {
     private void animateShootUp(){
         player.setAutoUpdateHeadAnimation(false);
         player.setAutoUpdateWeaponAnimation(true);
-        player.setShowingWeapon(true);
-        player.setAttacking(true);
         player.setUsingWeapon(true);
+        player.setAttacking(true);
 
 
         player.getWeaponAniPlayer().setAnimation("gun-uwd");

@@ -4,6 +4,10 @@ import game.entity_related.models.entities.Player;
 import game.window_related.GamePanel;
 import game.window_related.GameWindow;
 
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class Game implements Runnable {
 
     private GameWindow gameWindow;
@@ -19,10 +23,14 @@ public class Game implements Runnable {
 
     public Game() {
         player = new Player(100,100, 52,60, 5);
+
+        this.initData();
+
         this.gamePanel = new GamePanel(player);
         this.gameWindow = new GameWindow(gamePanel);
 
         this.gamePanel.requestFocus();
+
 
         startGameLoop();
     }
@@ -30,6 +38,30 @@ public class Game implements Runnable {
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    private void initData(){
+        this.loadPlayerSpriteSheet();
+    }
+
+
+    private void loadPlayerSpriteSheet() {
+        try {
+            InputStream dexBodySprites = getClass().getResourceAsStream("/sprites/dex-body-sprites.png");
+            InputStream dexHeadSprites = getClass().getResourceAsStream("/sprites/dex-head-sprites.png");
+            InputStream dexGunSprites = getClass().getResourceAsStream("/sprites/dex-gun.png");
+
+            assert dexHeadSprites != null;
+            assert dexBodySprites != null;
+
+            player.setBodySpriteSheet(ImageIO.read(dexBodySprites));
+            player.setHeadSpriteSheet(ImageIO.read(dexHeadSprites));
+
+            player.setDexGunSpriteSheet(ImageIO.read(dexGunSprites));
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro na importação da sprite sheet do jogador");
+        }
     }
 
     @Override

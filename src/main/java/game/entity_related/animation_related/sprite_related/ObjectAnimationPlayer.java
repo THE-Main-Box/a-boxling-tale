@@ -1,4 +1,4 @@
-package game.entity_related.animation_related;
+package game.entity_related.animation_related.sprite_related;
 
 import java.util.HashMap;
 import java.util.List;

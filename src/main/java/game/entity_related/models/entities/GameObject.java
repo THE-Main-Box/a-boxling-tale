@@ -1,9 +1,6 @@
 package game.entity_related.models.entities;
 
-import game.entity_related.animation_related.Sprite;
-
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 public abstract class GameObject {
     // Variáveis básicas para a posição e tamanho

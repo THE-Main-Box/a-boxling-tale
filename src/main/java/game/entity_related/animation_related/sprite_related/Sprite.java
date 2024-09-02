@@ -1,4 +1,4 @@
-package game.entity_related.animation_related;
+package game.entity_related.animation_related.sprite_related;
 
 public class Sprite {
     int indexX, indexY;

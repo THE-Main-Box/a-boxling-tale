@@ -1,4 +1,4 @@
-package game.entity_related.animation_related;
+package game.entity_related.animation_related.entity_renderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

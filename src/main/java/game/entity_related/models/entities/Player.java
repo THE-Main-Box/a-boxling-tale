@@ -1,13 +1,10 @@
 package game.entity_related.models.entities;
 
-import game.entity_related.animation_related.ObjectAnimationPlayer;
-import game.entity_related.animation_related.Sprite;
+import game.entity_related.animation_related.sprite_related.ObjectAnimationPlayer;
+import game.entity_related.animation_related.sprite_related.Sprite;
+import game.entity_related.animation_validators.PlayerAnimationValidation;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +19,17 @@ public class Player extends Movable {
     private static final int RENDER_HEIGHT = CANVAS_HEIGHT * 2;
 
     // Flags de estado
-    private boolean showingWeapon = false;
-    private boolean attacking = false;
-    private boolean usingWeapon = false;
+    private boolean attacking;
+
+    private boolean usingWeapon;
+    private boolean usingItem;
+
+    private boolean facingUpWards;
+
+    private boolean facingDownWards;
+
+    // Validadores de estado
+    private PlayerAnimationValidation aniValidator;
 
     // Sprites e animações
     private BufferedImage dexGunSpriteSheet;
@@ -65,11 +70,19 @@ public class Player extends Movable {
 
         setxMaxSpeed(200);
         setyMaxSpeed(800);
+
         setAcceleratingX(false);
+        setAcceleratingY(false);
+
+        setUsingWeapon(false);
+        setAttacking(false);
+
+        setFacingForward(true);
+        setFacingDownWards(false);
+        setFacingUpWards(false);
+
         setDecelerationX(0.8f);
         setDecelerationY(0.8f);
-
-        loadPlayerSpriteSheet();
 
         // Inicialização das animações
         initializeDexGunAnimations();
@@ -85,26 +98,8 @@ public class Player extends Movable {
         bodyAniPlayer.setAnimation("idle");
         headAniPlayer.setAnimation("idle");
 
-    }
+        aniValidator = new PlayerAnimationValidation(this);
 
-    private void loadPlayerSpriteSheet() {
-        try {
-            InputStream dexBodySprites = getClass().getResourceAsStream("/sprites/dex-body-sprites.png");
-            InputStream dexHeadSprites = getClass().getResourceAsStream("/sprites/dex-head-sprites.png");
-            InputStream dexGunSprites = getClass().getResourceAsStream("/sprites/dex-gun.png");
-
-            assert dexHeadSprites != null;
-            assert dexBodySprites != null;
-
-
-            bodySpriteSheet = ImageIO.read(dexBodySprites);
-            headSpriteSheet = ImageIO.read(dexHeadSprites);
-
-            dexGunSpriteSheet = ImageIO.read(dexGunSprites);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Erro na importação da sprite sheet do jogador");
-        }
     }
 
     public void initializeHeadEyesClosedAnimation() {
@@ -233,23 +228,21 @@ public class Player extends Movable {
         headAniPlayer.update(deltaTime);
         weaponAniPlayer.update(deltaTime);
 
-        validateWeaponAttackFinal();
+        aniValidator.validateWeaponAttackFinalSprite();
+        validateHeadDirection();
     }
 
-    private void validateWeaponAttackFinal() {
-        if (attacking) {
-            if (weaponAniPlayer.getCurrentSprite().equals(weaponAniPlayer.getCurrentAnimation().getLast())) {
-                attacking = false;
+    private void validateHeadDirection() {
+        if(facingDownWards && facingUpWards){
 
-                weaponAniPlayer.setAutoUpdateAni(false);
-
-                headAniPlayer.setAutoUpdateAni(true);
-
-                weaponAniPlayer.setCurrentAnimation(weaponAniPlayer.getCurrentAnimation());
-
-                headAniPlayer.setAnimation(bodyAniPlayer.getCurrentAnimationKey());
-            }
+        }else if (facingUpWards) {
+            aniValidator.updateHeadAnimation("look-up");
+        } else if (facingDownWards) {
+            aniValidator.updateHeadAnimation("look-down");
+        } else if (!facingUpWards && !facingDownWards && (usingWeapon || usingItem)) {
+            aniValidator.updateHeadAnimation("idle");
         }
+
     }
 
     public void setAutoUpdateBodyAnimation(boolean autoUpdate) {
@@ -288,15 +281,6 @@ public class Player extends Movable {
         return headSpriteSheet;
     }
 
-    public boolean isShowingWeapon() {
-        return showingWeapon;
-    }
-
-
-    public void setShowingWeapon(boolean showingWeapon) {
-        this.showingWeapon = showingWeapon;
-    }
-
     public boolean isAttacking() {
         return attacking;
     }
@@ -325,6 +309,29 @@ public class Player extends Movable {
         this.headSpriteSheet = headSpriteSheet;
     }
 
+    public boolean isFacingUpWards() {
+        return facingUpWards;
+    }
+
+    public void setFacingUpWards(boolean facingUpWards) {
+        this.facingUpWards = facingUpWards;
+    }
+
+    public boolean isFacingDownWards() {
+        return facingDownWards;
+    }
+
+    public void setFacingDownWards(boolean facingDownWards) {
+        this.facingDownWards = facingDownWards;
+    }
+
+    public boolean isUsingItem() {
+        return usingItem;
+    }
+
+    public void setUsingItem(boolean usingItem) {
+        this.usingItem = usingItem;
+    }
 
     public List<Sprite> getUpLookHeadAni() {
         return upLookHeadAni;
