@@ -66,13 +66,14 @@ public class GamePanel extends JPanel {
     }
 
     public void attack(int x, int y) {
+
         if (player.getxPos() + (player.getWidth() / 2) > x) { // caso ataque seja para trás
             playerController.attack(Directions.LEFT);
         } else if (player.getxPos() + (player.getWidth() / 2) < x) { // caso seja para frente
             playerController.attack(Directions.RIGHT);
         }
 
-        if (player.getyPos() > y) { // caso seja para cima
+        if (player.getyPos() > y) {  // caso seja para cima
             playerController.attack(Directions.UP);
         } else if (player.getyPos() + player.getHeight() < y) { //caso seja para baixo
             playerController.attack(Directions.DOWN);
@@ -83,7 +84,6 @@ public class GamePanel extends JPanel {
     public void updateGame(float deltaTime) {
         player.update(deltaTime);          // Atualiza a animação do jogador com deltaTime
 
-        playerController.canStopAttackAnimation();
     }
 
     @Override

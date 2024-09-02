@@ -87,7 +87,7 @@ public class Player extends Movable {
 
     }
 
-    private void loadPlayerSpriteSheet(){
+    private void loadPlayerSpriteSheet() {
         try {
             InputStream dexBodySprites = getClass().getResourceAsStream("/sprites/dex-body-sprites.png");
             InputStream dexHeadSprites = getClass().getResourceAsStream("/sprites/dex-head-sprites.png");
@@ -233,6 +233,23 @@ public class Player extends Movable {
         headAniPlayer.update(deltaTime);
         weaponAniPlayer.update(deltaTime);
 
+        validateWeaponAttackFinal();
+    }
+
+    private void validateWeaponAttackFinal() {
+        if (attacking) {
+            if (weaponAniPlayer.getCurrentSprite().equals(weaponAniPlayer.getCurrentAnimation().getLast())) {
+                attacking = false;
+
+                weaponAniPlayer.setAutoUpdateAni(false);
+
+                headAniPlayer.setAutoUpdateAni(true);
+
+                weaponAniPlayer.setCurrentAnimation(weaponAniPlayer.getCurrentAnimation());
+
+                headAniPlayer.setAnimation(bodyAniPlayer.getCurrentAnimationKey());
+            }
+        }
     }
 
     public void setAutoUpdateBodyAnimation(boolean autoUpdate) {

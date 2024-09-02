@@ -79,7 +79,8 @@ public class PlayerMovement {
         player.setAcceleratingX(false);
         player.setAcceleratingY(false);
 
-//        player.setApplyGravity(false);
+        player.getBodyAniPlayer().setAutoUpdateAni(true);
+        player.getHeadAniPlayer().setAutoUpdateAni(true);
 
         player.getBodyAniPlayer().setAnimation("idle");
         player.getHeadAniPlayer().setAnimation("idle");
