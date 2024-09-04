@@ -1,4 +1,4 @@
-package game.entity_related.animation_related;
+package game.entity_related.animation_related.animation_init;
 
 import game.entity_related.animation_related.sprite_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.sprite_related.Sprite;

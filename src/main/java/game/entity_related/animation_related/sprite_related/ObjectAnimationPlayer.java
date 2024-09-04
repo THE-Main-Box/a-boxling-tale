@@ -115,4 +115,8 @@ public class ObjectAnimationPlayer {
     public String getCurrentAnimationKey() {
         return currentAnimationKey;
     }
+
+    public void setAniTick(int aniTick) {
+        this.aniTick = aniTick;
+    }
 }

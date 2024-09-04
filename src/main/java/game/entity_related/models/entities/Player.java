@@ -1,6 +1,6 @@
 package game.entity_related.models.entities;
 
-import game.entity_related.animation_related.PlayerInitAnimations;
+import game.entity_related.animation_related.animation_init.PlayerInitAnimations;
 import game.entity_related.animation_related.entity_renderer.PlayerRenderer;
 import game.entity_related.animation_related.sprite_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.sprite_related.Sprite;
