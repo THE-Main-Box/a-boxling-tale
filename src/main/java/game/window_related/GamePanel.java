@@ -14,7 +14,6 @@ public class GamePanel extends JPanel {
 
     private Player player;
     private PlayerController playerController;
-    private PlayerRenderer playerRenderer;
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
@@ -22,7 +21,6 @@ public class GamePanel extends JPanel {
     public GamePanel(Player player) {
         this.player = player;
         this.playerController = new PlayerController(player);
-        this.playerRenderer = new PlayerRenderer(player);
 
         keyInputs = new KeyboardInput(this);
         mouseInputs = new MouseInput(this);
@@ -90,7 +88,7 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        playerRenderer.render(g);
+        player.render(g);
 
     }
 }

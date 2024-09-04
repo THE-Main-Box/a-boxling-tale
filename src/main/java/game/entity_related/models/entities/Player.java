@@ -1,9 +1,12 @@
 package game.entity_related.models.entities;
 
+import game.entity_related.animation_related.PlayerInitAnimations;
+import game.entity_related.animation_related.entity_renderer.PlayerRenderer;
 import game.entity_related.animation_related.sprite_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.sprite_related.Sprite;
 import game.entity_related.animation_validators.PlayerAnimationValidation;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,8 @@ public class Player extends Movable {
 
     // Validadores de estado
     private PlayerAnimationValidation aniValidator;
+    private PlayerInitAnimations initAnimations;
+    private PlayerRenderer renderer;
 
     // Sprites e animações
     private BufferedImage dexGunSpriteSheet;
@@ -85,135 +90,28 @@ public class Player extends Movable {
         setDecelerationY(0.8f);
 
         // Inicialização das animações
-        initializeDexGunAnimations();
-        initializeIdleAnimation();
-        initializeHeadEyesClosedAnimation();
-        initializeHeadFaceDownAnimation();
-        initializeHeadFaceUpAnimation();
-        initializeRunAnimation();
-        initializeJumpAnimation();
-        initializeFallAnimation();
-        initializeDamageAnimation();
+        initAnimations = new PlayerInitAnimations(bodyAniPlayer, weaponAniPlayer, headAniPlayer);
+        initiaizePlayerAnimations();
+
+        aniValidator = new PlayerAnimationValidation(this);
 
         bodyAniPlayer.setAnimation("idle");
         headAniPlayer.setAnimation("idle");
 
-        aniValidator = new PlayerAnimationValidation(this);
+        renderer = new PlayerRenderer(this);
 
     }
 
-    public void initializeHeadEyesClosedAnimation() {
-        idleHeadEyesClosedAni.add(new Sprite(2, 0, 1000));
-        idleHeadEyesClosedAni.add(new Sprite(3, 0, 1000));
-
-        headAniPlayer.addAnimation("idle-closed_e", idleHeadEyesClosedAni);
-    }
-
-    private void initializeHeadFaceUpAnimation() {
-        upLookHeadAni.add(new Sprite(0, 3, 1000));
-
-        headAniPlayer.addAnimation("look-up", upLookHeadAni);
-    }
-
-    private void initializeHeadFaceDownAnimation() {
-        downLookHeadAni.add(new Sprite(1, 3, 1000));
-
-        headAniPlayer.addAnimation("look-down", downLookHeadAni);
-    }
-
-    // Método para inicializar as animações da arma de Dex
-    private void initializeDexGunAnimations() {
-        dexGunFowardAni.add(new Sprite(0, 0, 100));
-        dexGunFowardAni.add(new Sprite(1, 0, 80));
-        dexGunFowardAni.add(new Sprite(2, 0, 100));
-        dexGunFowardAni.add(new Sprite(1, 0, 80));
-
-        dexGunUpAni.add(new Sprite(3, 0, 100));
-        dexGunUpAni.add(new Sprite(4, 0, 80));
-        dexGunUpAni.add(new Sprite(5, 0, 100));
-        dexGunUpAni.add(new Sprite(4, 0, 80));
-
-        dexGunDownAni.add(new Sprite(6, 0, 100));
-        dexGunDownAni.add(new Sprite(7, 0, 80));
-        dexGunDownAni.add(new Sprite(8, 0, 100));
-        dexGunDownAni.add(new Sprite(7, 0, 80));
-
-        weaponAniPlayer.addAnimation("gun-fwd", dexGunFowardAni);
-        weaponAniPlayer.addAnimation("gun-uwd", dexGunUpAni);
-        weaponAniPlayer.addAnimation("gun-dwd", dexGunDownAni);
-    }
-
-    // Método para inicializar as animações de queda
-    private void initializeFallAnimation() {
-        fallHeadAni.add(new Sprite(1, 2));
-        fallHeadAni.add(new Sprite(2, 2));
-
-        fallBodyAni.add(new Sprite(2, 3));
-        fallBodyAni.add(new Sprite(3, 3));
-
-        bodyAniPlayer.addAnimation("fall", fallBodyAni);
-        headAniPlayer.addAnimation("fall", fallHeadAni);
-    }
-
-    // Método para inicializar as animações de pulo
-    private void initializeJumpAnimation() {
-        jumpBodyAni.add(new Sprite(0, 3));
-        jumpBodyAni.add(new Sprite(1, 3));
-
-        jumpHeadAni.add(new Sprite(3, 1));
-        jumpHeadAni.add(new Sprite(0, 2));
-
-        bodyAniPlayer.addAnimation("jump", jumpBodyAni);
-        headAniPlayer.addAnimation("jump", jumpHeadAni);
-    }
-
-    // Método para inicializar as animações de dano
-    private void initializeDamageAnimation() {
-        damageHeadAni.add(new Sprite(3, 2, 300));
-
-        damageBodyAni.add(new Sprite(0, 4, 300));
-
-        bodyAniPlayer.addAnimation("dmg", damageBodyAni);
-        headAniPlayer.addAnimation("dmg", damageHeadAni);
-    }
-
-    // Método para inicializar as animações de idle
-    private void initializeIdleAnimation() {
-        idleBodyAni.add(new Sprite(0, 0, 1000));
-        idleBodyAni.add(new Sprite(1, 0, 1000));
-
-        idleHeadAni.add(new Sprite(0, 0, 1000));
-        idleHeadAni.add(new Sprite(1, 0, 1000));
-
-        bodyAniPlayer.addAnimation("idle", idleBodyAni);
-        headAniPlayer.addAnimation("idle", idleHeadAni);
-    }
-
-    // Método para inicializar as animações de corrida
-    private void initializeRunAnimation() {
-        runBodyAni.add(new Sprite(0, 1, 200));
-        runBodyAni.add(new Sprite(1, 1, 20));
-        runBodyAni.add(new Sprite(2, 1, 200));
-        runBodyAni.add(new Sprite(3, 1, 20));
-
-        runBodyAni.add(new Sprite(0, 2, 200));
-        runBodyAni.add(new Sprite(1, 2, 20));
-        runBodyAni.add(new Sprite(2, 2, 200));
-        runBodyAni.add(new Sprite(3, 2, 20));
-
-        runHeadAni.add(new Sprite(2, 1, 200));
-        runHeadAni.add(new Sprite(1, 1, 20));
-        runHeadAni.add(new Sprite(0, 1, 200));
-        runHeadAni.add(new Sprite(1, 1, 20));
-
-        runHeadAni.add(new Sprite(2, 1, 200));
-        runHeadAni.add(new Sprite(1, 1, 20));
-        runHeadAni.add(new Sprite(0, 1, 200));
-        runHeadAni.add(new Sprite(1, 1, 20));
-
-
-        bodyAniPlayer.addAnimation("run", runBodyAni);
-        headAniPlayer.addAnimation("run", runHeadAni);
+    private void initiaizePlayerAnimations(){
+        initAnimations.initializeDexGunAnimations(dexGunFowardAni, dexGunUpAni,dexGunDownAni);
+        initAnimations.initializeDamageAnimation(damageBodyAni,damageHeadAni);
+        initAnimations.initializeFallAnimation(fallBodyAni,fallHeadAni);
+        initAnimations.initializeHeadEyesClosedAnimation(idleHeadEyesClosedAni);
+        initAnimations.initializeIdleAnimation(idleBodyAni,idleHeadAni);
+        initAnimations.initializeJumpAnimation(jumpBodyAni,jumpHeadAni);
+        initAnimations.initializeRunAnimation(runBodyAni,runHeadAni);
+        initAnimations.initializeHeadFaceDownAnimation(downLookHeadAni);
+        initAnimations.initializeHeadFaceUpAnimation(upLookHeadAni);
     }
 
     @Override
@@ -230,6 +128,10 @@ public class Player extends Movable {
 
         aniValidator.validateWeaponAttackFinalSprite();
         validateHeadDirection();
+    }
+
+    public void render(Graphics g){
+        renderer.render(g);
     }
 
     private void validateHeadDirection() {
