@@ -1,5 +1,6 @@
 package game;
 
+import game.entity_related.models.blocks.StaticTileBlock;
 import game.entity_related.models.entities.Player;
 import game.window_related.GamePanel;
 import game.window_related.GameWindow;
@@ -42,8 +43,22 @@ public class Game implements Runnable {
 
     private void initData(){
         this.loadPlayerSpriteSheet();
+        this.loadStaticBlockSpriteSheet();
     }
 
+    private void loadStaticBlockSpriteSheet(){
+        try {
+
+            InputStream staticBlockTileSheet = getClass().getResourceAsStream("/sprites/rock-ground-tile-map.png");
+
+            assert staticBlockTileSheet != null;
+
+            StaticTileBlock.spriteSheet = ImageIO.read(staticBlockTileSheet);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro na importação da sprite sheet dos blocos do jogo");
+        }
+    }
 
     private void loadPlayerSpriteSheet() {
         try {
@@ -54,10 +69,10 @@ public class Game implements Runnable {
             assert dexHeadSprites != null;
             assert dexBodySprites != null;
 
-            player.setBodySpriteSheet(ImageIO.read(dexBodySprites));
-            player.setHeadSpriteSheet(ImageIO.read(dexHeadSprites));
+            Player.bodySpriteSheet = ImageIO.read(dexBodySprites);
+            Player.headSpriteSheet = ImageIO.read(dexHeadSprites);
 
-            player.setDexGunSpriteSheet(ImageIO.read(dexGunSprites));
+            Player.dexWeaponSpriteSheet = ImageIO.read(dexGunSprites);
 
         } catch (IOException e) {
             throw new RuntimeException("Erro na importação da sprite sheet do jogador");

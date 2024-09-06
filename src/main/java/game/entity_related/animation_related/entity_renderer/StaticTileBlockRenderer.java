@@ -22,7 +22,7 @@ public class StaticTileBlockRenderer {
                         staticTileBlock.getAnimationPlayer().getCurrentSprite().getIndexY(),
                         staticTileBlock.getCANVAS_WIDTH(),
                         staticTileBlock.getCANVAS_HEIGHT(),
-                        staticTileBlock.getTileSheet()
+                        StaticTileBlock.spriteSheet
                 ),
                 (int) staticTileBlock.getxPos(),
                 (int) staticTileBlock.getyPos(),

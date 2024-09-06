@@ -3,6 +3,7 @@ package game.entity_related.models.blocks;
 import game.entity_related.animation_related.entity_renderer.GameObjectRenderer;
 import game.entity_related.animation_related.sprite_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.sprite_related.Sprite;
+import game.entity_related.models.BlockType;
 import game.entity_related.models.entities.GameObject;
 
 import java.awt.image.BufferedImage;
@@ -11,8 +12,9 @@ import java.util.List;
 
 public abstract class TileBlock extends GameObject {
 
-    protected BufferedImage tileSheet;
     protected boolean animated;
+
+    protected BlockType blockType;
 
     protected ObjectAnimationPlayer animationPlayer;
 
@@ -33,12 +35,16 @@ public abstract class TileBlock extends GameObject {
 
     }
 
-    public BufferedImage getTileSheet() {
-        return tileSheet;
+    public List<Sprite> getSprites() {
+        return sprites;
     }
 
-    public void setTileSheet(BufferedImage tileSheet) {
-        this.tileSheet = tileSheet;
+    public BlockType getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(BlockType blockType) {
+        this.blockType = blockType;
     }
 
     public boolean isAnimated() {
