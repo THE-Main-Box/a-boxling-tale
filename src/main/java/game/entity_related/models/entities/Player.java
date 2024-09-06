@@ -37,9 +37,9 @@ public class Player extends Movable {
     private PlayerRenderer renderer;
 
     // Sprites e animações
-    private BufferedImage dexGunSpriteSheet;
-    private BufferedImage bodySpriteSheet;
-    private BufferedImage headSpriteSheet;
+    public static BufferedImage dexWeaponSpriteSheet;
+    public static BufferedImage bodySpriteSheet;
+    public static BufferedImage headSpriteSheet;
 
     private ObjectAnimationPlayer weaponAniPlayer = new ObjectAnimationPlayer();
     private ObjectAnimationPlayer bodyAniPlayer = new ObjectAnimationPlayer();
@@ -171,18 +171,6 @@ public class Player extends Movable {
         return headAniPlayer;
     }
 
-    public BufferedImage getDexGunSpriteSheet() {
-        return dexGunSpriteSheet;
-    }
-
-    public BufferedImage getBodySpriteSheet() {
-        return bodySpriteSheet;
-    }
-
-    public BufferedImage getHeadSpriteSheet() {
-        return headSpriteSheet;
-    }
-
     public boolean isAttacking() {
         return attacking;
     }
@@ -197,18 +185,6 @@ public class Player extends Movable {
 
     public void setUsingWeapon(boolean usingWeapon) {
         this.usingWeapon = usingWeapon;
-    }
-
-    public void setDexGunSpriteSheet(BufferedImage dexGunSpriteSheet) {
-        this.dexGunSpriteSheet = dexGunSpriteSheet;
-    }
-
-    public void setBodySpriteSheet(BufferedImage bodySpriteSheet) {
-        this.bodySpriteSheet = bodySpriteSheet;
-    }
-
-    public void setHeadSpriteSheet(BufferedImage headSpriteSheet) {
-        this.headSpriteSheet = headSpriteSheet;
     }
 
     public boolean isFacingUpWards() {

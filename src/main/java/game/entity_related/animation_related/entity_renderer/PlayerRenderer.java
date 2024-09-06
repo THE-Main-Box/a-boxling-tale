@@ -40,7 +40,7 @@ public class PlayerRenderer {
                         player.getBodyAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
-                        player.getBodySpriteSheet()
+                        Player.bodySpriteSheet
                 ),
                 spritePosX,
                 spritePosY,
@@ -58,7 +58,7 @@ public class PlayerRenderer {
                         player.getWeaponAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
-                        player.getDexGunSpriteSheet()
+                        Player.dexWeaponSpriteSheet
                 ),
                 spritePosX,
                 spritePosY,
@@ -76,7 +76,7 @@ public class PlayerRenderer {
                         player.getHeadAniPlayer().getCurrentSprite().getIndexY(),
                         player.GET_CANVAS_WIDTH(),
                         player.GET_CANVAS_HEIGHT(),
-                        player.getHeadSpriteSheet()
+                        Player.headSpriteSheet
                 ),
                 spritePosX,
                 spritePosY,

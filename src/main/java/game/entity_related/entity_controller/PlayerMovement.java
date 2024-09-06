@@ -76,9 +76,10 @@ public class PlayerMovement {
 
     //parar de se mover
     public void stopMoving() {
-        player.setAcceleratingX(false);
-        player.setAcceleratingY(false);
-
+        if (player.isAcceleratingX()) {
+            player.setAcceleratingX(false);
+            player.setAcceleratingY(false);
+        }
         player.getBodyAniPlayer().setAutoUpdateAni(true);
         player.getHeadAniPlayer().setAutoUpdateAni(true);
 
