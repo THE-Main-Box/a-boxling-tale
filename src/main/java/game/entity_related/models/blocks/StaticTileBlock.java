@@ -1,6 +1,7 @@
 package game.entity_related.models.blocks;
 
-import game.entity_related.animation_related.entity_renderer.StaticTileBlockRenderer;
+import game.entity_related.animation_related.entity_renderer.BlockRenderer;
+import game.entity_related.models.BlockType;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,14 +13,15 @@ public class StaticTileBlock extends TileBlock{
             RENDER_WIDTH = CANVAS_WIDTH * 2,
             RENDER_HEIGHT = CANVAS_HEIGHT * 2;
 
-    private StaticTileBlockRenderer renderer;
+    private BlockRenderer renderer;
 
     public static BufferedImage spriteSheet;
 
     public StaticTileBlock(float xPos, float yPos, int width, int height, boolean animated) {
         super(xPos, yPos, width, height, animated);
+        this.blockType.add(BlockType.STATIC);
 
-        renderer = new StaticTileBlockRenderer(this);
+        renderer = new BlockRenderer(this);
     }
 
     public void render(Graphics g){
@@ -42,11 +44,11 @@ public class StaticTileBlock extends TileBlock{
         return RENDER_HEIGHT;
     }
 
-    public StaticTileBlockRenderer getRenderer() {
+    public BlockRenderer getRenderer() {
         return renderer;
     }
 
-    public void setRenderer(StaticTileBlockRenderer renderer) {
+    public void setRenderer(BlockRenderer renderer) {
         this.renderer = renderer;
     }
 }

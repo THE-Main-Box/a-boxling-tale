@@ -5,5 +5,8 @@ public enum BlockType {
     BLOCK,
     DECORATION,
     WALL,
-    CEILING
+    CEILING,
+    MOVABLE,
+    STATIC,
+    SPECIAL
 }

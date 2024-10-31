@@ -1,14 +1,17 @@
 package game.window_related;
 
 import game.entity_related.animation_related.entity_renderer.PlayerRenderer;
+import game.entity_related.animation_related.sprite_related.Sprite;
 import game.entity_related.entity_controller.PlayerController;
 import game.entity_related.models.Directions;
+import game.entity_related.models.blocks.StaticTileBlock;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
 import game.entity_related.models.entities.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
@@ -17,6 +20,8 @@ public class GamePanel extends JPanel {
 
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
+
+    private StaticTileBlock testBlock= new StaticTileBlock(50,10,40,40,false);
 
     public GamePanel(Player player) {
         this.player = player;
@@ -89,6 +94,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
         player.render(g);
+        testBlock.render(g);
 
     }
 }

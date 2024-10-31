@@ -56,8 +56,8 @@ public class PlayerRenderer {
                 player.getSpriteByIndex(
                         player.getWeaponAniPlayer().getCurrentSprite().getIndexX(),
                         player.getWeaponAniPlayer().getCurrentSprite().getIndexY(),
-                        player.GET_CANVAS_WIDTH(),
-                        player.GET_CANVAS_HEIGHT(),
+                        Player.GET_CANVAS_WIDTH(),
+                        Player.GET_CANVAS_HEIGHT(),
                         Player.dexWeaponSpriteSheet
                 ),
                 spritePosX,
@@ -74,8 +74,8 @@ public class PlayerRenderer {
                 player.getSpriteByIndex(
                         player.getHeadAniPlayer().getCurrentSprite().getIndexX(),
                         player.getHeadAniPlayer().getCurrentSprite().getIndexY(),
-                        player.GET_CANVAS_WIDTH(),
-                        player.GET_CANVAS_HEIGHT(),
+                        Player.GET_CANVAS_WIDTH(),
+                        Player.GET_CANVAS_HEIGHT(),
                         Player.headSpriteSheet
                 ),
                 spritePosX,

@@ -1,8 +1,8 @@
 package game.entity_related.animation_related.sprite_related;
 
 public class Sprite {
-    int indexX, indexY;
-    long duration;
+    private int indexX, indexY;
+    private long duration;
 
     public Sprite(int indexX, int indexY, long duration) {
         this.indexX = indexX;
