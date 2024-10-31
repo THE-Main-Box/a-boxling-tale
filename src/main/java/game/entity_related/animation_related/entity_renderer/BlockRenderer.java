@@ -7,18 +7,18 @@ import java.awt.*;
 
 public class BlockRenderer {
 
-    private StaticTileBlock staticTileBlock;
     private StaticBlockRenderer staticBlockRenderer;
 
-    public BlockRenderer(StaticTileBlock staticTileBlock) {
-        this.staticTileBlock = staticTileBlock;
-        this.staticBlockRenderer = new StaticBlockRenderer(staticTileBlock);
+    // renderizadopr de blocos
+
+    public BlockRenderer() { // inicializa o renderizador para renderizar os blocos staticos
+        this.staticBlockRenderer = new StaticBlockRenderer();
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, StaticTileBlock staticTileBlock) {
 
         if(staticTileBlock != null){
-            staticBlockRenderer.render(g);
+            staticBlockRenderer.render(g, staticTileBlock);
         }
 
     }

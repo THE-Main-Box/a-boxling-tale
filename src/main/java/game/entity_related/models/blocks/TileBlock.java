@@ -1,6 +1,5 @@
 package game.entity_related.models.blocks;
 
-import game.entity_related.animation_related.sprite_related.BlockSpriteDefiner;
 import game.entity_related.animation_related.sprite_related.ObjectAnimationPlayer;
 import game.entity_related.animation_related.sprite_related.Sprite;
 import game.entity_related.models.BlockType;
@@ -16,9 +15,10 @@ public abstract class TileBlock extends GameObject {
     protected List<BlockType> blockType = new ArrayList<>();
 
     protected ObjectAnimationPlayer animationPlayer;
-    protected BlockSpriteDefiner blockSpriteDefiner;
 
-    protected List<Sprite> sprites = new ArrayList<>();
+    protected List<Sprite> sprites;
+
+    protected Sprite currentSprite;
 
     public TileBlock(float xPos, float yPos, int width, int height, boolean animated) {
         super(xPos, yPos, width, height);
@@ -26,13 +26,19 @@ public abstract class TileBlock extends GameObject {
         this.animated = animated;
 
         if(animated){
+            sprites = new ArrayList<>();
             animationPlayer = new ObjectAnimationPlayer();
             animationPlayer.setCurrentAnimation(sprites);
-        } else {
-            sprites.add(new Sprite(0,0));
-            blockSpriteDefiner = new BlockSpriteDefiner(sprites.getFirst()); // seta o sprite com base na lista de sprites
         }
 
+    }
+
+    public Sprite getCurrentSprite() {
+        return currentSprite;
+    }
+
+    public void setCurrentSprite(Sprite currentSprite) {
+        this.currentSprite = currentSprite;
     }
 
     public List<Sprite> getSprites() {
@@ -55,6 +61,10 @@ public abstract class TileBlock extends GameObject {
         this.blockType = blockType;
     }
 
+    public void addBlockType(BlockType blockType){
+        this.blockType.add(blockType);
+    }
+
     public boolean isAnimated() {
         return animated;
     }
@@ -67,11 +77,4 @@ public abstract class TileBlock extends GameObject {
         return animationPlayer;
     }
 
-    public BlockSpriteDefiner getBlockSpriteDefiner() {
-        return blockSpriteDefiner;
-    }
-
-    public void setCurrentInanimatedSprite(int index){
-        this.blockSpriteDefiner.setSprite(sprites.get(index));
-    }
 }

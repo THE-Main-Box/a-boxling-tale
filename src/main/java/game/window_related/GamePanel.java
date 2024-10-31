@@ -1,17 +1,17 @@
 package game.window_related;
 
-import game.entity_related.animation_related.entity_renderer.PlayerRenderer;
-import game.entity_related.animation_related.sprite_related.Sprite;
+import game.entity_related.animation_related.entity_renderer.BlockRenderer;
 import game.entity_related.entity_controller.PlayerController;
 import game.entity_related.models.Directions;
 import game.entity_related.models.blocks.StaticTileBlock;
+import game.entity_related.models.entities.Player;
 import game.input_related.KeyboardInput;
 import game.input_related.MouseInput;
-import game.entity_related.models.entities.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GamePanel extends JPanel {
 
@@ -21,9 +21,11 @@ public class GamePanel extends JPanel {
     private KeyboardInput keyInputs;
     private MouseInput mouseInputs;
 
-    private StaticTileBlock testBlock= new StaticTileBlock(50,10,40,40,false);
+    private List<StaticTileBlock> staticBlocks;
 
-    public GamePanel(Player player) {
+    private BlockRenderer blocksRenderer = new BlockRenderer();
+
+    public GamePanel(Player player, List<StaticTileBlock> staticBlocks) {
         this.player = player;
         this.playerController = new PlayerController(player);
 
@@ -37,6 +39,7 @@ public class GamePanel extends JPanel {
         addMouseMotionListener(mouseInputs);
         addKeyListener(keyInputs);
 
+        this.staticBlocks = staticBlocks;
     }
 
     private void setPanelSize() {
@@ -46,6 +49,29 @@ public class GamePanel extends JPanel {
         setMaximumSize(size);
         setMinimumSize(size);
     }
+
+
+    public void updateGame(float deltaTime) {
+        player.update(deltaTime);          // Atualiza a animação do jogador com deltaTime
+
+    }
+
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        player.render(g);
+        renderBlocks(g);
+
+    }
+
+    private void renderBlocks(Graphics g){
+        staticBlocks.forEach(STB -> {
+            blocksRenderer.render(g, STB);
+        });
+    }
+
 
     public void movePlayer(Directions playerDirection) {
 
@@ -81,20 +107,6 @@ public class GamePanel extends JPanel {
         } else if (player.getyPos() + player.getHeight() < y) { //caso seja para baixo
             playerController.attack(Directions.DOWN);
         }
-
-    }
-
-    public void updateGame(float deltaTime) {
-        player.update(deltaTime);          // Atualiza a animação do jogador com deltaTime
-
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        player.render(g);
-        testBlock.render(g);
 
     }
 }

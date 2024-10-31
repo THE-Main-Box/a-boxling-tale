@@ -9,12 +9,13 @@ public class StaticBlockRenderer {
     private GameObjectRenderer renderer;        // usa o renderizador padrão de blocos
     private StaticTileBlock staticTileBlock;    // bloco statico para ser renderizado
 
-    public StaticBlockRenderer(StaticTileBlock staticTileBlock) {
-        this.staticTileBlock = staticTileBlock;
+    public StaticBlockRenderer() {      //inicializa o renderizador padrão
         this.renderer = new GameObjectRenderer();
     }
 
-    public void render(Graphics g){     // realiza a renderização
+    public void render(Graphics g, StaticTileBlock staticTileBlock){ // chama a logica da renderização do bloco estatico
+
+        this.staticTileBlock = staticTileBlock;
 
         if(staticTileBlock.isAnimated()){ // verifica se o bloco é animado ou não para renderizar de acordo
             renderAnimatedStaticBlock(g);
@@ -46,8 +47,8 @@ public class StaticBlockRenderer {
         renderer.render(
                 g,
                 staticTileBlock.getSpriteByIndex(
-                        staticTileBlock.getBlockSpriteDefiner().getSprite().getIndexX(),
-                        staticTileBlock.getBlockSpriteDefiner().getSprite().getIndexY(),
+                        staticTileBlock.getCurrentSprite().getIndexX(),
+                        staticTileBlock.getCurrentSprite().getIndexY(),
                         staticTileBlock.getCANVAS_WIDTH(),
                         staticTileBlock.getCANVAS_HEIGHT(),
                         StaticTileBlock.spriteSheet
