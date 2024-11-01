@@ -22,7 +22,7 @@ public class Game implements Runnable {
 
     private Thread gameThread;
 
-    private Player player;
+    private Player player; // TODO: alterar o meio como os inputs são processados para impedir que o jogador trave quando mudar de direção
 
     private List<StaticTileBlock> staticTileBlocks = new ArrayList<>();
 

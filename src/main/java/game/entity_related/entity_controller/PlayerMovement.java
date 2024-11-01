@@ -13,7 +13,7 @@ public class PlayerMovement {
         this.player = player;
     }
 
-    //mover para a direita
+    //mover e alterar sprites e animação para mover para a direita
     public void moveRight() {
 
         player.setAutoUpdateBodyAnimation(true);
@@ -29,7 +29,7 @@ public class PlayerMovement {
     }
 
 
-    //mover para a esquerda
+    //mover e alterar sprites e animação para mover para a esquerda
     public void moveLeft() {
 
         player.setAutoUpdateBodyAnimation(true);
@@ -44,7 +44,7 @@ public class PlayerMovement {
         player.getBodyAniPlayer().setAnimation("run");
     }
 
-    //mover para cima
+    //mover e alterar sprites e animação para mover para cima
     public void moveUp() {
 
         player.setAutoUpdateBodyAnimation(false);
@@ -60,7 +60,7 @@ public class PlayerMovement {
         player.getBodyAniPlayer().setCurrentSprite("jump", 1);
     }
 
-    //mover para baixo
+    //mover e alterar sprites e animação para mover para baixo
     public void moveDown() {
         player.setAutoUpdateBodyAnimation(false);
         player.setAutoUpdateHeadAnimation(false);
@@ -74,7 +74,7 @@ public class PlayerMovement {
 
     }
 
-    //parar de se mover
+    //parar e alterar sprites e animação para mover de se mover
     public void stopMoving() {
         if (player.isAcceleratingX()) {
             player.setAcceleratingX(false);
